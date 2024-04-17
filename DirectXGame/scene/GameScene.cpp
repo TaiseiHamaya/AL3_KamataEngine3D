@@ -7,13 +7,21 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {}
 
 void GameScene::Initialize() {
-
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+
+	textureHandle = TextureManager::Load("./Resources/uvChecker.png");
+	model = std::shared_ptr<Model>(Model::Create());
+	viewProjection.Initialize();
+
+	player = std::make_unique<Player>();
+	player->initialize(model, textureHandle);
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+	player->update();
+}
 
 void GameScene::Draw() {
 
@@ -24,9 +32,9 @@ void GameScene::Draw() {
 	// 背景スプライト描画前処理
 	Sprite::PreDraw(commandList);
 
-	/// <summary>
-	/// ここに背景スプライトの描画処理を追加できる
-	/// </summary>
+	/// -------------------------------------- ///
+	/// ここに背景スプライトの描画処理を追加できる ///
+	/// ---------------------------------------///
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -38,9 +46,10 @@ void GameScene::Draw() {
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
 
-	/// <summary>
-	/// ここに3Dオブジェクトの描画処理を追加できる
-	/// </summary>
+	/// ---------------------------------------///
+	/// ここに3Dオブジェクトの描画処理を追加できる ///
+	/// ---------------------------------------///
+	player->draw(viewProjection);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -50,9 +59,9 @@ void GameScene::Draw() {
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
 
-	/// <summary>
-	/// ここに前景スプライトの描画処理を追加できる
-	/// </summary>
+	/// ---------------------------------------///
+	/// ここに前景スプライトの描画処理を追加できる ///
+	/// ---------------------------------------///
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
