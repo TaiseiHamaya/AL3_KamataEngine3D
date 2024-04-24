@@ -4,6 +4,8 @@
 #include <WorldTransform.h>
 #include <Model.h>
 
+class Input;
+
 class Player {
 public: // コンストラクタ
 	Player() = default;
@@ -21,4 +23,8 @@ private: // メンバ変数
 	WorldTransform worldTransform;
 	std::weak_ptr<Model> model;
 	uint32_t textureHandle;
+
+	const float kCharacterSpeed = 0.5f;
+
+	Input* input;
 };

@@ -12,6 +12,10 @@
 
 #include <memory>
 
+#ifdef _DEBUG
+#include "DebugCamera.h"
+#endif // _DEBUG
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -56,4 +60,7 @@ private: // メンバ変数
 	ViewProjection viewProjection;
 	
 	std::unique_ptr<Player> player;
+
+	bool isDebugCameraActive;
+	DebugCamera* debugCamera;
 };

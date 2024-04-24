@@ -163,6 +163,8 @@ public:
 	/// <param name="vector">変化させるベクトル</param>
 	/// <returns></returns>
 	static Vector3 Abs(const Vector3& vector);
+
+	static Vector3 Clamp(const Vector3& vector, const Vector3& min, const Vector3& max);
 };
 
 // ------------------インライン関数定義------------------
