@@ -28,12 +28,18 @@ public:
 	Quaternion(float x, float y, float z, float w);
 
 	/// <summary>
-	/// オイラー角からクォータニオンを生成
+	/// オイラー角からクォータニオンを生成(ラジアン)
 	/// </summary>
 	/// <param name="pitch">X軸回転</param>
 	/// <param name="yaw">Y軸回転</param>
 	/// <param name="roll">Z軸回転</param>
 	Quaternion(float pitch, float yaw, float roll);
+
+	/// <summary>
+	/// オイラー角からクォータニオンを生成(ラジアン)
+	/// </summary>
+	/// <param name="rotate">XYZ軸回転</param>
+	Quaternion(const Vector3& rotate);
 
 public:
 	Quaternion& operator=(const Quaternion& rhs) noexcept;

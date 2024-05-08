@@ -58,6 +58,9 @@
     <Filter Include="ヘッダー ファイル\scene\Player">
       <UniqueIdentifier>{e5c452df-20f3-4003-9f72-aba7333fe23c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\3d">
+      <UniqueIdentifier>{c7a4ac93-333d-431b-a17c-f44993593e8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -95,6 +98,12 @@
     </ClCompile>
     <ClCompile Include="math\Easing.cpp">
       <Filter>ソース ファイル\math</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePrograms\Bullet.cpp">
+      <Filter>ソース ファイル\scene\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="3d\WorldTransformEX.cpp">
+      <Filter>ソース ファイル\3d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="math\Easing.h">
       <Filter>ヘッダー ファイル\math</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePrograms\Bullet.h">
+      <Filter>ヘッダー ファイル\scene\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -19,7 +19,7 @@ Quaternion::Quaternion(Quaternion&& rhs) noexcept :
 }
 
 Quaternion::Quaternion(const Vector3& axis, float angleAxis) :
-	xyz((axis != Vec3::kZero ? axis.normalize() : Vec3::kZero) * std::sin(angleAxis / 2)),
+	xyz((axis != Vec3::kZero ? axis.normalize() : Vec3::kZero)* std::sin(angleAxis / 2)),
 	w(std::cos(angleAxis / 2)) {
 }
 
@@ -36,11 +36,14 @@ Quaternion::Quaternion(float pitch, float yaw, float roll) {
 	float sin_yaw = std::sin(yaw / 2);
 	float sin_roll = std::sin(roll / 2);
 	xyz = {
-		sin_pitch * cos_yaw * cos_roll + cos_pitch * sin_yaw * sin_roll,
+		sin_pitch * cos_yaw * cos_roll - cos_pitch * sin_yaw * sin_roll,
 		cos_pitch * sin_yaw * cos_roll + sin_pitch * cos_yaw * sin_roll,
-		cos_pitch * cos_yaw * sin_roll + sin_pitch * sin_yaw * cos_roll,
+		cos_pitch * cos_yaw * sin_roll - sin_pitch * sin_yaw * cos_roll,
 	};
 	w = cos_pitch * cos_yaw * cos_roll + sin_pitch * sin_yaw * sin_roll;
+}
+
+Quaternion::Quaternion(const Vector3& rotate) : Quaternion{ rotate.x, rotate.y, rotate.z } {
 }
 
 Quaternion& Quaternion::operator=(const Quaternion& rhs) noexcept {
@@ -94,11 +97,12 @@ const Matrix4x4 Quaternion::to_matrix() const {
 	float yw = xyz.y * w;
 	float zz = xyz.z * xyz.z;
 	float zw = xyz.z * w;
+	float ww = w * w;
 
 	return {
-		{{1 - 2 * (yy + zz), 2 * (xy - zw), 2 * (xz + yw), 0},
-		{2 * (xy + zw), 1 - 2 * (xx + zz), 2 * (yz - xw), 0},
-		{2 * (xz - yw), 2 * (yz + xw), 1 - 2 * (xx + yy), 0},
+		{{ww + xx - yy - zz, 2 * (xy + zw), 2 * (xz - yw), 0},
+		{2 * (xy - zw),ww - xx + yy - zz, 2 * (yz + xw), 0},
+		{2 * (xz + yw), 2 * (yz - xw), ww - xx - yy + zz , 0},
 		{0,0,0,1}}
 	};
 }

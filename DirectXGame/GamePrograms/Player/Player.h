@@ -4,12 +4,14 @@
 #include <WorldTransform.h>
 #include <Model.h>
 
+#include "Bullet.h"
+
 class Input;
 
 class Player {
 public: // コンストラクタ
 	Player() = default;
-	~Player() = default;
+	~Player();
 
 public: // publicメンバ関数
 	void initialize(const std::shared_ptr<Model>& model_, uint32_t textureHandle_);
@@ -17,7 +19,7 @@ public: // publicメンバ関数
 	void draw(const ViewProjection& viewProjection) const;
 
 private: //privateメンバ関数
-
+	void attack();
 
 private: // メンバ変数
 	WorldTransform worldTransform;
@@ -25,6 +27,9 @@ private: // メンバ変数
 	uint32_t textureHandle;
 
 	const float kCharacterSpeed = 0.5f;
+	const float kCharacterRotateSpeed = 0.02f;
 
 	Input* input;
+
+	Bullet* bullet;
 };

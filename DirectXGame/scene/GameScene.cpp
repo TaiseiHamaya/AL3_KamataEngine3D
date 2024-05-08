@@ -5,6 +5,10 @@
 
 #include <cassert>
 
+#ifdef _DEBUG
+#include "imgui.h"
+#endif // _DEBUG
+
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
@@ -34,10 +38,12 @@ void GameScene::Update() {
 		isDebugCameraActive = !isDebugCameraActive;
 	}
 	if (isDebugCameraActive) {
-		debugCamera->Update();
-		viewProjection.matView = debugCamera->GetViewProjection().matView;
-		viewProjection.matProjection = debugCamera->GetViewProjection().matProjection;
-		viewProjection.TransferMatrix();
+		if (!ImGui::GetIO().WantCaptureMouse) {
+			debugCamera->Update();
+			viewProjection.matView = debugCamera->GetViewProjection().matView;
+			viewProjection.matProjection = debugCamera->GetViewProjection().matProjection;
+			viewProjection.TransferMatrix();
+		}
 	}
 	else {
 		viewProjection.UpdateMatrix();
