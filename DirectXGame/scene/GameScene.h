@@ -9,6 +9,7 @@
 #include "WorldTransform.h"
 
 #include "Player/Player.h"
+#include "Enemy/Enemy.h"
 
 #include <memory>
 
@@ -60,6 +61,7 @@ private: // メンバ変数
 	ViewProjection viewProjection;
 	
 	std::unique_ptr<Player> player;
+	std::unique_ptr<Enemy> enemy;
 
 	bool isDebugCameraActive;
 	DebugCamera* debugCamera;

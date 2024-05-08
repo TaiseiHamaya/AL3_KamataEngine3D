@@ -61,6 +61,12 @@
     <Filter Include="ソース ファイル\3d">
       <UniqueIdentifier>{c7a4ac93-333d-431b-a17c-f44993593e8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\scene\Enemy">
+      <UniqueIdentifier>{e662d912-0424-452a-affc-bedaef0f19fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\scene\Enemy">
+      <UniqueIdentifier>{c3624263-e95c-4940-97eb-68da72034205}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -104,6 +110,9 @@
     </ClCompile>
     <ClCompile Include="3d\WorldTransformEX.cpp">
       <Filter>ソース ファイル\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePrograms\Enemy\Enemy.cpp">
+      <Filter>ソース ファイル\scene\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="GamePrograms\Bullet.h">
       <Filter>ヘッダー ファイル\scene\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePrograms\Enemy\Enemy.h">
+      <Filter>ヘッダー ファイル\scene\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

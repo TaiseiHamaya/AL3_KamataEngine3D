@@ -20,12 +20,20 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
+	// いろいろ
 	textureHandle = TextureManager::Load("./Resources/uvChecker.png");
 	model = std::shared_ptr<Model>(Model::Create());
 	viewProjection.Initialize();
 
+	// プレイヤー
 	player = std::make_unique<Player>();
 	player->initialize(model, textureHandle);
+
+	// エネミー
+	enemy = std::make_unique<Enemy>();
+	enemy->initialize(model, { 0,0,120 }, textureHandle);
+
+	// デバッグ
 	isDebugCameraActive = false;
 	debugCamera = new DebugCamera{ WinApp::kWindowWidth, WinApp::kWindowHeight };
 	AxisIndicator::GetInstance()->SetVisible(true);
@@ -49,7 +57,11 @@ void GameScene::Update() {
 		viewProjection.UpdateMatrix();
 	}
 #endif // _DEBUG
+	// player
 	player->update();
+
+	// enemy
+	enemy->update();
 }
 
 void GameScene::Draw() {
@@ -79,6 +91,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる ///
 	/// ---------------------------------------///
 	player->draw(viewProjection);
+	enemy->draw(viewProjection);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
