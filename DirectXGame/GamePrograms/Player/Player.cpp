@@ -69,6 +69,12 @@ void Player::update() {
 	for (auto bullet_itr = bullets.begin(); bullet_itr != bullets.end(); ++bullet_itr) {
 		bullet_itr->update();
 	}
+	bullets.remove_if([](const Bullet& bullet) {
+		if (bullet.is_dead()) {
+			return true;
+		}
+		return false;
+		});
 }
 
 void Player::draw(const ViewProjection& viewProjection) const {
@@ -80,7 +86,9 @@ void Player::draw(const ViewProjection& viewProjection) const {
 
 void Player::attack() {
 	if (input->TriggerKey(DIK_SPACE)) {
+		static constexpr float kBulletSpeed = 1.0f;
+		Vector3 velocity = Transform3D::HomogeneousVector({ 0,0,kBulletSpeed }, worldTransform.matWorld_);
 		bullets.emplace_back();
-		bullets.back().initialize(model, worldTransform.translation_);
+		bullets.back().initialize(model, worldTransform.translation_, velocity);
 	}
 }
