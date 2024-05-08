@@ -9,7 +9,7 @@ class Bullet {
 public:
 	void initialize(std::weak_ptr<Model>& p_model, const Vector3& position);
 	void update();
-	void draw(const ViewProjection& viewProjection);
+	void draw(const ViewProjection& viewProjection) const;
 
 private:
 	WorldTransform transform;

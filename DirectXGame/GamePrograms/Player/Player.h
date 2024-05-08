@@ -3,6 +3,7 @@
 #include <TextureManager.h>
 #include <WorldTransform.h>
 #include <Model.h>
+#include <list>
 
 #include "Bullet.h"
 
@@ -31,5 +32,5 @@ private: // メンバ変数
 
 	Input* input;
 
-	Bullet* bullet;
+	std::list<Bullet> bullets;
 };

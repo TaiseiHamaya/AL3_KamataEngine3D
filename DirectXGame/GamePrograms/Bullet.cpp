@@ -13,6 +13,6 @@ void Bullet::update() {
 	transform.UpdateMatrix();
 }
 
-void Bullet::draw(const ViewProjection& viewProjection) {
+void Bullet::draw(const ViewProjection& viewProjection) const {
 	model.lock()->Draw(transform, viewProjection, textureHandle);
 }

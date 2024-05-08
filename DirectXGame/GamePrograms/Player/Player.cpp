@@ -8,9 +8,6 @@
 #include <algorithm>
 
 Player::~Player() {
-	if (bullet) {
-		delete bullet;
-	}
 }
 
 void Player::initialize(const std::shared_ptr<Model>& model_, uint32_t textureHandle_) {
@@ -22,7 +19,7 @@ void Player::initialize(const std::shared_ptr<Model>& model_, uint32_t textureHa
 
 	input = Input::GetInstance();
 
-	bullet = nullptr;
+	bullets.clear();
 }
 
 void Player::update() {
@@ -69,21 +66,21 @@ void Player::update() {
 	worldTransform.TransferMatrix();
 
 	// bullet update
-	if (bullet) {
-		bullet->update();
+	for (auto bullet_itr = bullets.begin(); bullet_itr != bullets.end(); ++bullet_itr) {
+		bullet_itr->update();
 	}
 }
 
 void Player::draw(const ViewProjection& viewProjection) const {
 	model.lock()->Draw(worldTransform, viewProjection, textureHandle);
-	if (bullet) {
-		bullet->draw(viewProjection);
+	for (auto bullet_itr = bullets.begin(); bullet_itr != bullets.end(); ++bullet_itr) {
+		bullet_itr->draw(viewProjection);
 	}
 }
 
 void Player::attack() {
-	if (input->PushKey(DIK_SPACE)) {
-		bullet = new Bullet{};
-		bullet->initialize(model, worldTransform.translation_);
+	if (input->TriggerKey(DIK_SPACE)) {
+		bullets.emplace_back();
+		bullets.back().initialize(model, worldTransform.translation_);
 	}
 }
