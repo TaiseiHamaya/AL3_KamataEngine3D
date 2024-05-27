@@ -149,4 +149,6 @@ public:// static関数
 	/// <param name="matrix">変換行列</param>
 	/// <returns></returns>
 	static Vector3 HomogeneousVector(const Vector3& vector, const Matrix4x4& matrix);
+
+	static Vector3 ExtractPosition(const Matrix4x4& matrix);
 };

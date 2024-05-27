@@ -5,7 +5,7 @@
 #include <WorldTransform.h>
 #include <memory>
 
-class Bullet {
+class PlayerBullet {
 public:
 	void initialize(std::weak_ptr<Model>& p_model, const Vector3& position, const Vector3& velocity_);
 	void update();

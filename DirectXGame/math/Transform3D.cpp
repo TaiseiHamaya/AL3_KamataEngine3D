@@ -266,3 +266,11 @@ Vector3 Transform3D::HomogeneousVector(const Vector3& vector, const Matrix4x4& m
 		(vector.x * matrix[0][2] + vector.y * matrix[1][2] + vector.z * matrix[2][2] + 1.0f * 0) / w
 	};
 }
+
+Vector3 Transform3D::ExtractPosition(const Matrix4x4& matrix) {
+	Vector3 result;
+	result.x = matrix[3][0];
+	result.y = matrix[3][1];
+	result.z = matrix[3][2];
+	return result;
+}

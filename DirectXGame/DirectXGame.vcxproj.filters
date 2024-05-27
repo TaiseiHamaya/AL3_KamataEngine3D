@@ -105,13 +105,16 @@
     <ClCompile Include="math\Easing.cpp">
       <Filter>ソース ファイル\math</Filter>
     </ClCompile>
-    <ClCompile Include="GamePrograms\Bullet.cpp">
+    <ClCompile Include="GamePrograms\PlayerBullet.cpp">
       <Filter>ソース ファイル\scene\Player</Filter>
     </ClCompile>
     <ClCompile Include="3d\WorldTransformEX.cpp">
       <Filter>ソース ファイル\3d</Filter>
     </ClCompile>
     <ClCompile Include="GamePrograms\Enemy\Enemy.cpp">
+      <Filter>ソース ファイル\scene\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePrograms\Enemy\EnemyBullet.cpp">
       <Filter>ソース ファイル\scene\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
@@ -224,10 +227,13 @@
     <ClInclude Include="math\Easing.h">
       <Filter>ヘッダー ファイル\math</Filter>
     </ClInclude>
-    <ClInclude Include="GamePrograms\Bullet.h">
+    <ClInclude Include="GamePrograms\PlayerBullet.h">
       <Filter>ヘッダー ファイル\scene\Player</Filter>
     </ClInclude>
     <ClInclude Include="GamePrograms\Enemy\Enemy.h">
+      <Filter>ヘッダー ファイル\scene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePrograms\Enemy\EnemyBullet.h">
       <Filter>ヘッダー ファイル\scene\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

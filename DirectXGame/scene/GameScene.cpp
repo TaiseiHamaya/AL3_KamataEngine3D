@@ -30,8 +30,8 @@ void GameScene::Initialize() {
 	player->initialize(model, textureHandle);
 
 	// エネミー
-	enemy = std::make_unique<Enemy>();
-	enemy->initialize(model, { 0,0,120 }, textureHandle);
+	enemy = std::make_unique<Enemy>(player.get());
+	enemy->initialize(model, { 0,5,120 }, textureHandle);
 
 	// デバッグ
 	isDebugCameraActive = false;

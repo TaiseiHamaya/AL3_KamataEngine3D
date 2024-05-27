@@ -5,7 +5,7 @@
 #include <Model.h>
 #include <list>
 
-#include "Bullet.h"
+#include "PlayerBullet.h"
 
 class Input;
 
@@ -22,6 +22,9 @@ public: // publicメンバ関数
 private: //privateメンバ関数
 	void attack();
 
+public:
+	Vector3 GetPosition() const;
+
 private: // メンバ変数
 	WorldTransform worldTransform;
 	std::weak_ptr<Model> model;
@@ -32,5 +35,5 @@ private: // メンバ変数
 
 	Input* input;
 
-	std::list<Bullet> bullets;
+	std::list<PlayerBullet> bullets;
 };

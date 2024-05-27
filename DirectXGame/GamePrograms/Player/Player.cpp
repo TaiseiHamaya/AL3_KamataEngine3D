@@ -24,7 +24,9 @@ void Player::initialize(const std::shared_ptr<Model>& model_, uint32_t textureHa
 
 void Player::update() {
 	// imgui debug
-	ImGui::Begin("Player");
+	ImGui::SetNextWindowPos({ 50,50 }, ImGuiCond_Once);
+	ImGui::SetNextWindowSize({ 210,100 }, ImGuiCond_Once);
+	ImGui::Begin("Player", nullptr, ImGuiWindowFlags_NoSavedSettings);
 	ImGui::DragFloat3("Scale", &worldTransform.scale_.x, 0.1f);
 	ImGui::DragFloat3("Rotate", &worldTransform.rotation_.x, 0.02f);
 	ImGui::DragFloat3("Position", &worldTransform.translation_.x, 0.5f);
@@ -69,7 +71,7 @@ void Player::update() {
 	for (auto bullet_itr = bullets.begin(); bullet_itr != bullets.end(); ++bullet_itr) {
 		bullet_itr->update();
 	}
-	bullets.remove_if([](const Bullet& bullet) {
+	bullets.remove_if([](const PlayerBullet& bullet) {
 		if (bullet.is_dead()) {
 			return true;
 		}
@@ -91,4 +93,8 @@ void Player::attack() {
 		bullets.emplace_back();
 		bullets.back().initialize(model, worldTransform.translation_, velocity);
 	}
+}
+
+Vector3 Player::GetPosition() const {
+	return Transform3D::ExtractPosition(worldTransform.matWorld_);
 }
