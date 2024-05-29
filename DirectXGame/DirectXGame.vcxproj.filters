@@ -120,6 +120,9 @@
     <ClCompile Include="GamePrograms\Skydome.cpp">
       <Filter>ソース ファイル\scene</Filter>
     </ClCompile>
+    <ClCompile Include="GamePrograms\RailCamera.cpp">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -240,6 +243,9 @@
       <Filter>ヘッダー ファイル\scene\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="GamePrograms\Skydome.h">
+      <Filter>ヘッダー ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePrograms\RailCamera.h">
       <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
   </ItemGroup>

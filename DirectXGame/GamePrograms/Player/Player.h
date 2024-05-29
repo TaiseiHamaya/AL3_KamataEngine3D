@@ -15,7 +15,7 @@ public: // コンストラクタ
 	~Player();
 
 public: // publicメンバ関数
-	void initialize(const std::shared_ptr<Model>& model_, uint32_t textureHandle_);
+	void initialize(const std::shared_ptr<Model>& model_, uint32_t textureHandle_, Vector3&& position);
 	void update();
 	void draw(const ViewProjection& viewProjection) const;
 	void on_collision();
@@ -27,6 +27,8 @@ public:
 	Vector3 get_position() const;
 	std::list<PlayerBullet>& get_bullets();
 	const std::list<PlayerBullet>& get_bullets() const;
+
+	void set_parent(const WorldTransform* parent);
 
 private: // メンバ変数
 	WorldTransform worldTransform;

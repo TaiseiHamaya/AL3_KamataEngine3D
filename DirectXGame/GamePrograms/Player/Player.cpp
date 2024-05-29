@@ -1,21 +1,20 @@
 #include "Player.h"
 
-#include <assert.h>
+#include <cassert>
 #include <imgui.h>
 #include <Input.h>
 
 #include <math/Transform3D.h>
-#include <algorithm>
 
 Player::~Player() {
 }
 
-void Player::initialize(const std::shared_ptr<Model>& model_, uint32_t textureHandle_) {
+void Player::initialize(const std::shared_ptr<Model>& model_, uint32_t textureHandle_, Vector3&& position) {
 	assert(model_);
 	model = model_;
 	textureHandle = textureHandle_;
 	worldTransform.Initialize();
-	worldTransform.translation_ = {};
+	worldTransform.translation_ = position;
 
 	input = Input::GetInstance();
 
@@ -50,7 +49,7 @@ void Player::update() {
 	if (move != Vec3::kZero) {
 		worldTransform.translation_ += move.normalize() * kCharacterSpeed;
 	}
-	worldTransform.translation_ = Vector3::Clamp(worldTransform.translation_, Vector3{ -33.0f, -18.0f, 0.0f}, Vector3{ 33.0f, 18.0f, 0.0f });
+	worldTransform.translation_ = Vector3::Clamp(worldTransform.translation_, Vector3{ -33.0f, -18.0f, 0.0f}, Vector3{ 33.0f, 18.0f, 10000.0f });
 	
 	// rotate
 	if (input->PushKey(DIK_A)) {
@@ -64,8 +63,7 @@ void Player::update() {
 	attack();
 	
 	// update
-	worldTransform.matWorld_ = Transform3D::MakeAffineMatrix(worldTransform.scale_, Quaternion{ worldTransform.rotation_.x,worldTransform.rotation_.y,worldTransform.rotation_.z }, worldTransform.translation_);
-	worldTransform.TransferMatrix();
+	worldTransform.UpdateMatrix();
 
 	// bullet update
 	for (auto bullet_itr = bullets.begin(); bullet_itr != bullets.end(); ++bullet_itr) {
@@ -95,7 +93,7 @@ void Player::attack() {
 		static constexpr float kBulletSpeed = 1.0f;
 		Vector3 velocity = Transform3D::HomogeneousVector({ 0,0,kBulletSpeed }, worldTransform.matWorld_);
 		bullets.emplace_back();
-		bullets.back().initialize(model, worldTransform.translation_, velocity);
+		bullets.back().initialize(model, get_position(), velocity);
 	}
 }
 
@@ -109,4 +107,8 @@ std::list<PlayerBullet>& Player::get_bullets() {
 
 const std::list<PlayerBullet>& Player::get_bullets() const {
 	return bullets;
+}
+
+void Player::set_parent(const WorldTransform* parent) {
+	worldTransform.parent_ = parent;
 }

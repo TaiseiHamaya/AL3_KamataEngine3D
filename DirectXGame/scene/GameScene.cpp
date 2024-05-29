@@ -1,5 +1,6 @@
 #include "GameScene.h"
 
+#include "Sprite.h"
 #include "TextureManager.h"
 #include "AxisIndicator.h"
 
@@ -26,24 +27,29 @@ void GameScene::Initialize() {
 	textureHandle = TextureManager::Load("./Resources/uvChecker.png");
 	model = std::shared_ptr<Model>(Model::Create());
 	skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
-	viewProjection.Initialize();
 
 	// プレイヤー
 	player = std::make_unique<Player>();
-	player->initialize(model, textureHandle);
+	player->initialize(model, textureHandle, {0,0,50});
 
 	// エネミー
 	enemy = std::make_unique<Enemy>(player.get());
 	enemy->initialize(model, { 0,5,120 }, textureHandle);
 
+	// 天球
 	skydome = std::make_unique<Skydome>();
 	skydome->initialize(skydomeModel);
+
+	// カメラ
+	railCamera = std::make_unique<RailCamera>();
+	railCamera->initialize({ 0,0,0 }, { 0,0,0 });
+
+	player->set_parent(railCamera->get_world_transform());
 
 	// デバッグ
 	isDebugCameraActive = false;
 	debugCamera = new DebugCamera{ WinApp::kWindowWidth, WinApp::kWindowHeight };
 	AxisIndicator::GetInstance()->SetVisible(true);
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection);
 }
 
 void GameScene::Update() {
@@ -54,15 +60,15 @@ void GameScene::Update() {
 	if (isDebugCameraActive) {
 		if (!ImGui::GetIO().WantCaptureMouse) {
 			debugCamera->Update();
-			viewProjection.matView = debugCamera->GetViewProjection().matView;
-			viewProjection.matProjection = debugCamera->GetViewProjection().matProjection;
-			viewProjection.TransferMatrix();
+			railCamera->update_debug(debugCamera);
 		}
 	}
 	else {
-		viewProjection.UpdateMatrix();
+		railCamera->update();
 	}
-#endif // _DEBUG
+#else
+	railCamera->update();
+#endif
 	// player
 	player->update();
 
@@ -75,13 +81,13 @@ void GameScene::Update() {
 	std::list<EnemyBullet>& enemyBullets = enemy->get_bullets();
 	for (auto playerBulletsItr = playerBullets.begin(); playerBulletsItr != playerBullets.end(); ++playerBulletsItr) {
 		if (IsCollision(enemy->get_position(), playerBulletsItr->get_position())) {
- 			enemy->on_collision();
+			enemy->on_collision();
 			playerBulletsItr->on_collision();
 		}
-	}	
+	}
 	for (auto enmeyBulletsItr = enemyBullets.begin(); enmeyBulletsItr != enemyBullets.end(); ++enmeyBulletsItr) {
 		if (IsCollision(player->get_position(), enmeyBulletsItr->get_position())) {
-  			player->on_collision();
+			player->on_collision();
 			enmeyBulletsItr->on_collision();
 		}
 	}
@@ -121,9 +127,9 @@ void GameScene::Draw() {
 	/// ---------------------------------------///
 	/// ここに3Dオブジェクトの描画処理を追加できる ///
 	/// ---------------------------------------///
-	player->draw(viewProjection);
-	enemy->draw(viewProjection);
-	skydome->draw(viewProjection);
+	player->draw(railCamera->get_vp());
+	enemy->draw(railCamera->get_vp());
+	skydome->draw(railCamera->get_vp());
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

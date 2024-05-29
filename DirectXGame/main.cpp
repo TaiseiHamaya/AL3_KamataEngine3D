@@ -6,6 +6,7 @@
 #include "PrimitiveDrawer.h"
 #include "TextureManager.h"
 #include "WinApp.h"
+#include "Sprite.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
