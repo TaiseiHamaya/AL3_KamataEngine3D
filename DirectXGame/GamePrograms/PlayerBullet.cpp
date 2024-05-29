@@ -1,6 +1,7 @@
 #include "PlayerBullet.h"
 
 #include <TextureManager.h>
+#include "Transform3D.h"
 
 void PlayerBullet::initialize(std::weak_ptr<Model>& p_model, const Vector3& position, const Vector3& velocity_) {
 	model = p_model;
@@ -23,4 +24,12 @@ void PlayerBullet::update() {
 
 void PlayerBullet::draw(const ViewProjection& viewProjection) const {
 	model.lock()->Draw(transform, viewProjection, textureHandle);
+}
+
+void PlayerBullet::on_collision() {
+	isDead = true;
+}
+
+Vector3 PlayerBullet::get_position() const {
+	return Transform3D::ExtractPosition(transform.matWorld_);
 }

@@ -18,12 +18,15 @@ public: // publicメンバ関数
 	void initialize(const std::shared_ptr<Model>& model_, uint32_t textureHandle_);
 	void update();
 	void draw(const ViewProjection& viewProjection) const;
+	void on_collision();
 
 private: //privateメンバ関数
 	void attack();
 
 public:
-	Vector3 GetPosition() const;
+	Vector3 get_position() const;
+	std::list<PlayerBullet>& get_bullets();
+	const std::list<PlayerBullet>& get_bullets() const;
 
 private: // メンバ変数
 	WorldTransform worldTransform;

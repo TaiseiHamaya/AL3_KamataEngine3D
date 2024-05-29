@@ -56,6 +56,12 @@ void Enemy::update() {
 	for (auto bulletsItr = bullets.begin(); bulletsItr != bullets.end(); ++bulletsItr) {
 		bulletsItr->update();
 	}
+	bullets.remove_if([](const EnemyBullet& bullet) {
+		if (bullet.is_dead()) {
+			return true;
+		}
+		return false;
+		});
 	worldTransform.translation_ += velocity;
 	worldTransform.UpdateMatrix();
 }
@@ -67,12 +73,28 @@ void Enemy::draw(const ViewProjection& viewProjection) const {
 	}
 }
 
+void Enemy::on_collision() {
+	--hitpoint;
+}
+
 void Enemy::fire() {
 	bullets.emplace_back();
-	bullets.back().initialize(model, worldTransform.translation_, (pPlayer->GetPosition() - Transform3D::ExtractPosition(worldTransform.matWorld_)).normalize());
-	shotTimer = shotDistance;
+	bullets.back().initialize(model, worldTransform.translation_, (pPlayer->get_position() - Transform3D::ExtractPosition(worldTransform.matWorld_)).normalize());
+	shotTimer = shotInterval;
 }
 
 void Enemy::init_approach() {
-	shotTimer = shotDistance;
+	shotTimer = shotInterval;
+}
+
+std::list<EnemyBullet>& Enemy::get_bullets() {
+	return bullets;
+}
+
+const std::list<EnemyBullet>& Enemy::get_bullets() const {
+	return bullets;
+}
+
+Vector3 Enemy::get_position() const {
+	return Transform3D::ExtractPosition(worldTransform.matWorld_);
 }

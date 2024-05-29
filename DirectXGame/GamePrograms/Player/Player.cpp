@@ -86,6 +86,10 @@ void Player::draw(const ViewProjection& viewProjection) const {
 	}
 }
 
+void Player::on_collision() {
+	// do nothing
+}
+
 void Player::attack() {
 	if (input->TriggerKey(DIK_SPACE)) {
 		static constexpr float kBulletSpeed = 1.0f;
@@ -95,6 +99,14 @@ void Player::attack() {
 	}
 }
 
-Vector3 Player::GetPosition() const {
+Vector3 Player::get_position() const {
 	return Transform3D::ExtractPosition(worldTransform.matWorld_);
+}
+
+std::list<PlayerBullet>& Player::get_bullets() {
+	return bullets;
+}
+
+const std::list<PlayerBullet>& Player::get_bullets() const {
+	return bullets;
 }

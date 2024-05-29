@@ -3,11 +3,13 @@
 #include "TextureManager.h"
 #include "AxisIndicator.h"
 
-#include <cassert>
-
 #ifdef _DEBUG
 #include "imgui.h"
 #endif // _DEBUG
+
+bool IsCollision(const Vector3& pos1, const Vector3& pos2) {
+	return (pos1 - pos2).length() < 3.0f;
+}
 
 GameScene::GameScene() {}
 
@@ -62,6 +64,29 @@ void GameScene::Update() {
 
 	// enemy
 	enemy->update();
+
+	std::list<PlayerBullet>& playerBullets = player->get_bullets();
+	std::list<EnemyBullet>& enemyBullets = enemy->get_bullets();
+	for (auto playerBulletsItr = playerBullets.begin(); playerBulletsItr != playerBullets.end(); ++playerBulletsItr) {
+		if (IsCollision(enemy->get_position(), playerBulletsItr->get_position())) {
+ 			enemy->on_collision();
+			playerBulletsItr->on_collision();
+		}
+	}	
+	for (auto enmeyBulletsItr = enemyBullets.begin(); enmeyBulletsItr != enemyBullets.end(); ++enmeyBulletsItr) {
+		if (IsCollision(player->get_position(), enmeyBulletsItr->get_position())) {
+  			player->on_collision();
+			enmeyBulletsItr->on_collision();
+		}
+	}
+	for (auto enmeyBulletsItr = enemyBullets.begin(); enmeyBulletsItr != enemyBullets.end(); ++enmeyBulletsItr) {
+		for (auto playerBulletsItr = playerBullets.begin(); playerBulletsItr != playerBullets.end(); ++playerBulletsItr) {
+			if (IsCollision(playerBulletsItr->get_position(), enmeyBulletsItr->get_position())) {
+				enmeyBulletsItr->on_collision();
+				playerBulletsItr->on_collision();
+			}
+		}
+	}
 }
 
 void GameScene::Draw() {
