@@ -114,6 +114,7 @@
     <ClCompile Include="GamePrograms\PlayerBullet.cpp" />
     <ClCompile Include="GamePrograms\Enemy\Enemy.cpp" />
     <ClCompile Include="GamePrograms\Player\Player.cpp" />
+    <ClCompile Include="GamePrograms\Skydome.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math\Easing.cpp" />
     <ClCompile Include="math\Matrix.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="GamePrograms\PlayerBullet.h" />
     <ClInclude Include="GamePrograms\Enemy\Enemy.h" />
     <ClInclude Include="GamePrograms\Player\Player.h" />
+    <ClInclude Include="GamePrograms\Skydome.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="math\Array2D.h" />
     <ClInclude Include="math\Definition.h" />

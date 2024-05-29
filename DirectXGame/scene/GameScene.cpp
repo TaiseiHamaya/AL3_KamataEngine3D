@@ -25,6 +25,7 @@ void GameScene::Initialize() {
 	// いろいろ
 	textureHandle = TextureManager::Load("./Resources/uvChecker.png");
 	model = std::shared_ptr<Model>(Model::Create());
+	skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
 	viewProjection.Initialize();
 
 	// プレイヤー
@@ -34,6 +35,9 @@ void GameScene::Initialize() {
 	// エネミー
 	enemy = std::make_unique<Enemy>(player.get());
 	enemy->initialize(model, { 0,5,120 }, textureHandle);
+
+	skydome = std::make_unique<Skydome>();
+	skydome->initialize(skydomeModel);
 
 	// デバッグ
 	isDebugCameraActive = false;
@@ -64,6 +68,8 @@ void GameScene::Update() {
 
 	// enemy
 	enemy->update();
+
+	skydome->update();
 
 	std::list<PlayerBullet>& playerBullets = player->get_bullets();
 	std::list<EnemyBullet>& enemyBullets = enemy->get_bullets();
@@ -117,6 +123,7 @@ void GameScene::Draw() {
 	/// ---------------------------------------///
 	player->draw(viewProjection);
 	enemy->draw(viewProjection);
+	skydome->draw(viewProjection);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

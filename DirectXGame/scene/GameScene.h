@@ -8,6 +8,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
+#include "Skydome.h"
 #include "Player/Player.h"
 #include "Enemy/Enemy.h"
 
@@ -58,10 +59,12 @@ private: // メンバ変数
 	/// </summary>
 	int32_t textureHandle;
 	std::shared_ptr<Model> model;
+	std::shared_ptr<Model> skydomeModel;
 	ViewProjection viewProjection;
 	
 	std::unique_ptr<Player> player;
 	std::unique_ptr<Enemy> enemy;
+	std::unique_ptr<Skydome> skydome;
 
 	bool isDebugCameraActive;
 	DebugCamera* debugCamera;

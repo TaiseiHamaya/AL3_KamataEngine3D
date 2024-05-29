@@ -117,6 +117,9 @@
     <ClCompile Include="GamePrograms\Enemy\EnemyBullet.cpp">
       <Filter>ソース ファイル\scene\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="GamePrograms\Skydome.cpp">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -235,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="GamePrograms\Enemy\EnemyBullet.h">
       <Filter>ヘッダー ファイル\scene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePrograms\Skydome.h">
+      <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
