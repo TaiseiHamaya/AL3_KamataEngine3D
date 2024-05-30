@@ -40,6 +40,7 @@ private: // メンバ変数
 
 	WorldTransform transform3DReticle;
 	std::unique_ptr<Sprite> sprite;
+	Vector2 reticlePos;
 
 	Input* input;
 
