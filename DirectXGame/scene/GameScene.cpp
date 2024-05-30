@@ -6,6 +6,8 @@
 #include "TextureManager.h"
 #include "AxisIndicator.h"
 
+#include "Camera3D.h"
+
 #ifdef _DEBUG
 #include "imgui.h"
 #endif // _DEBUG
@@ -14,7 +16,7 @@ bool IsCollision(const Vector3& pos1, const Vector3& pos2) {
 	return (pos1 - pos2).length() < 3.0f;
 }
 
-GameScene::GameScene() { 
+GameScene::GameScene() {
 }
 
 GameScene::~GameScene() {
@@ -22,18 +24,17 @@ GameScene::~GameScene() {
 }
 
 void GameScene::Initialize() {
+	Camera3D::Initialize();
+
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
 	// いろいろ
-	textureHandle = TextureManager::Load("./Resources/uvChecker.png");
+	textureHandle = TextureManager::Load("uvChecker.png");
+	reticleTextureHandle = TextureManager::Load("reticle.png");
 	model = std::shared_ptr<Model>(Model::Create());
 	skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
-
-	// プレイヤー
-	player = std::make_unique<Player>();
-	player->initialize(model, textureHandle, { 0,0,50 });
 
 	// 天球
 	skydome = std::make_unique<Skydome>();
@@ -43,7 +44,11 @@ void GameScene::Initialize() {
 	railCamera = std::make_unique<RailCamera>();
 	railCamera->initialize({ 0,0,-50 }, { 0,0,0 });
 
+	// プレイヤー
+	player = std::make_unique<Player>();
+	player->initialize(model, textureHandle, reticleTextureHandle, { 0,0,50 });
 	player->set_parent(railCamera->get_world_transform());
+	player->set_viewprojection(&railCamera->get_vp());
 
 	// デバッグ
 	isDebugCameraActive = false;
@@ -169,6 +174,8 @@ void GameScene::Draw() {
 	/// ---------------------------------------///
 	/// ここに前景スプライトの描画処理を追加できる ///
 	/// ---------------------------------------///
+
+	player->draw_ui();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

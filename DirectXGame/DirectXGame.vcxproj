@@ -117,6 +117,7 @@
     <ClCompile Include="GamePrograms\RailCamera.cpp" />
     <ClCompile Include="GamePrograms\Skydome.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="math\Camera3D.cpp" />
     <ClCompile Include="math\Easing.cpp" />
     <ClCompile Include="math\Matrix.cpp" />
     <ClCompile Include="math\Quaternion.cpp" />
@@ -157,10 +158,10 @@
     <ClInclude Include="GamePrograms\Skydome.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="math\Array2D.h" />
+    <ClInclude Include="math\Camera3D.h" />
     <ClInclude Include="math\Definition.h" />
     <ClInclude Include="math\Easing.h" />
     <ClInclude Include="math\Matrix.h" />
-    <ClInclude Include="math\Matrix4x4.h" />
     <ClInclude Include="math\Quaternion.h" />
     <ClInclude Include="math\Transform3D.h" />
     <ClInclude Include="math\Vector2.h" />

@@ -67,6 +67,7 @@ private: // メンバ変数
 	/// ゲームシーン用
 	/// </summary>
 	int32_t textureHandle;
+	int32_t reticleTextureHandle;
 	std::shared_ptr<Model> model;
 	std::shared_ptr<Model> skydomeModel;
 	int32_t waitTime;

@@ -1,13 +1,14 @@
 #pragma once
 
-#include <TextureManager.h>
+#include <list>
+
 #include <WorldTransform.h>
 #include <Model.h>
-#include <list>
 
 #include "PlayerBullet.h"
 
 class Input;
+class Sprite;
 
 class Player {
 public: // コンストラクタ
@@ -15,9 +16,10 @@ public: // コンストラクタ
 	~Player();
 
 public: // publicメンバ関数
-	void initialize(const std::shared_ptr<Model>& model_, uint32_t textureHandle_, Vector3&& position);
+	void initialize(const std::shared_ptr<Model>& model_, uint32_t textureHandle_, uint32_t reticleSpriteHandle, Vector3&& position);
 	void update();
 	void draw(const ViewProjection& viewProjection) const;
+	void draw_ui();
 	void on_collision();
 
 private: //privateメンバ関数
@@ -29,16 +31,21 @@ public:
 	const std::list<PlayerBullet>& get_bullets() const;
 
 	void set_parent(const WorldTransform* parent);
+	void set_viewprojection(const ViewProjection* const viewProjection);
 
 private: // メンバ変数
 	WorldTransform worldTransform;
 	std::weak_ptr<Model> model;
 	uint32_t textureHandle;
 
-	const float kCharacterSpeed = 0.5f;
-	const float kCharacterRotateSpeed = 0.02f;
+	WorldTransform transform3DReticle;
+	std::unique_ptr<Sprite> sprite;
 
 	Input* input;
 
 	std::list<PlayerBullet> bullets;
+
+	const float kCharacterSpeed = 0.5f;
+	const float kCharacterRotateSpeed = 0.02f;
+	const ViewProjection* refViewProjection;
 };

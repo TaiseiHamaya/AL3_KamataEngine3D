@@ -13,12 +13,15 @@ void RailCamera::initialize(Vector3&& position, Vector3&& rotate) {
 
 void RailCamera::update() {
 #ifdef _DEBUG
-	ImGui::Begin("Camera");
+	ImGui::SetNextWindowPos({ 50,50 }, ImGuiCond_Once);
+	ImGui::SetNextWindowSize({ 210,80 }, ImGuiCond_Once);
+	ImGui::Begin("Camera", nullptr, ImGuiWindowFlags_NoSavedSettings);
 	ImGui::DragFloat3("Position", &transform.translation_.x, 0.1f);
 	ImGui::DragFloat3("Rotate", &transform.rotation_.x, 0.1f);
 	ImGui::End();
 #endif // _DEBUG
 	
+	//transform.translation_.z += 0.1f;
 	transform.UpdateMatrix();
 	viewProjection.matView = transform.matWorld_.inverse();
 	viewProjection.TransferMatrix();

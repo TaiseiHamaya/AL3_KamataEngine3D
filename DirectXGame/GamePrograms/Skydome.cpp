@@ -3,7 +3,7 @@
 void Skydome::initialize(std::weak_ptr<Model> model_) {
 	transform.Initialize();
 	model = model_;
-	transform.scale_ = { 200,200,200 };
+	transform.scale_ = { 500,500,500 };
 }
 
 void Skydome::update() {
