@@ -3,7 +3,7 @@
 #include <TextureManager.h>
 #include "Transform3D.h"
 
-void EnemyBullet::initialize(std::weak_ptr<Model>& p_model, const Vector3& position, const Vector3& direction) {
+void EnemyBullet::initialize(std::weak_ptr<Model> p_model, const Vector3& position, const Vector3& direction) {
 	model = p_model;
 	transform.Initialize();
 	transform.translation_ = position;

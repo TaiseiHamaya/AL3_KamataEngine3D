@@ -2,8 +2,6 @@
 
 #include "imgui.h"
 #include <AxisIndicator.h>
-#include <Quaternion.h>
-#include "Transform3D.h"
 
 void RailCamera::initialize(Vector3&& position, Vector3&& rotate) {
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection);

@@ -7,7 +7,7 @@
 
 class EnemyBullet {
 public:
-	void initialize(std::weak_ptr<Model>& p_model, const Vector3& position, const Vector3& velocity_);
+	void initialize(std::weak_ptr<Model> p_model, const Vector3& position, const Vector3& velocity_);
 	void update();
 	void draw(const ViewProjection& viewProjection) const;
 	void on_collision();

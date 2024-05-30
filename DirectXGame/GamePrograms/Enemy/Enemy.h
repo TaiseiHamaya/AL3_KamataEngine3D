@@ -7,6 +7,7 @@
 #include "EnemyBullet.h"
 
 class Player;
+class GameScene;
 
 enum class EnemyPhase {
 	kEnemyPhaseApproach,
@@ -16,7 +17,6 @@ enum class EnemyPhase {
 class Enemy {
 public: // コンストラクタ
 	Enemy();
-	Enemy(Player* const player);
 	~Enemy() = default;
 
 public: // publicメンバ関数
@@ -30,9 +30,11 @@ private:
 	void init_approach();
 
 public:
-	std::list<EnemyBullet>& get_bullets();
-	const std::list<EnemyBullet>& get_bullets() const;
+	bool is_dead() const;
 	Vector3 get_position() const;
+
+	void set_player(Player* player);
+	void set_game_scene(GameScene* gameScene_);
 
 private: // メンバ変数
 	WorldTransform worldTransform;
@@ -40,10 +42,10 @@ private: // メンバ変数
 	uint32_t textureHandle;
 	Vector3 velocity;
 	EnemyPhase phase;
-	std::list<EnemyBullet> bullets;
 	int hitpoint;
 	int shotTimer;
 	static constexpr int shotInterval = 60;
 
-	Player* const pPlayer;
+	Player* pPlayer;
+	GameScene* gameScene;
 };

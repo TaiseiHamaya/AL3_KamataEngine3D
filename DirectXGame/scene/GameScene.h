@@ -1,11 +1,14 @@
 #pragma once
 
+#include <list>
+#include <sstream>
+
 #include "Audio.h"
 #include "DirectXCommon.h"
 #include "Input.h"
 #include "Model.h"
-#include "ViewProjection.h"
 
+#include "Enemy/EnemyBullet.h"
 #include "Skydome.h"
 #include "Player/Player.h"
 #include "Enemy/Enemy.h"
@@ -21,7 +24,6 @@
 /// ゲームシーン
 /// </summary>
 class GameScene {
-
 public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
@@ -48,6 +50,14 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	void add_enemy_bullets(Vector3&& position);
+
+	void load_pop_data();
+
+	void update_pop_command();
+
+	void pop_enemy(Vector3&& position);
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -59,11 +69,15 @@ private: // メンバ変数
 	int32_t textureHandle;
 	std::shared_ptr<Model> model;
 	std::shared_ptr<Model> skydomeModel;
+	int32_t waitTime;
 	
 	std::unique_ptr<Player> player;
-	std::unique_ptr<Enemy> enemy;
+	std::list<Enemy> enemys;
 	std::unique_ptr<Skydome> skydome;
 	std::unique_ptr<RailCamera> railCamera;
+	std::list<EnemyBullet> enemyBullets;
+
+	std::stringstream enemyPopCommands;
 
 	bool isDebugCameraActive;
 	DebugCamera* debugCamera;
