@@ -41,7 +41,9 @@ public:
 
 	static void CameraUpdate();
 
+#ifdef _DEBUG
 	static void DebugGUI();
+#endif // _DEBUG
 
 	static bool IsUpdatedVPMatrix();
 
@@ -61,11 +63,14 @@ public:
 
 private:
 	void InstanceCameraUpdate();
-	void _DebugGUI();
 	void MakeViewMatrix();
 	void MakeOrthoMatrix();
 	void MakePersectiveFovMatrix();
 	void MakeViewportMatrix();
+
+#ifdef _DEBUG
+	void _DebugGUI();
+#endif // _DEBUG
 
 private:// 一つに絞る
 	static std::unique_ptr<Camera3D> instance;

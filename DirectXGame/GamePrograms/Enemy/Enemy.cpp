@@ -1,6 +1,8 @@
 #include "Enemy.h"
 
+#ifdef _DEBUG
 #include "imgui.h"
+#endif // _DEBUG
 #include "Player/Player.h"
 #include "GameScene.h"
 #include "Transform3D.h"

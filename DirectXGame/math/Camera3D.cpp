@@ -3,7 +3,9 @@
 #include <cmath>
 
 #include <WinApp.h>
+#ifdef _DEBUG
 #include <imgui.h>
+#endif // _DEBUG
 
 #undef near
 #undef far
@@ -55,9 +57,11 @@ void Camera3D::CameraUpdate() {
 	instance->InstanceCameraUpdate();
 }
 
+#ifdef _DEBUG
 void Camera3D::DebugGUI() {
 	instance->_DebugGUI();
 }
+#endif // _DEBUG
 
 const Matrix4x4& Camera3D::GetOrthoMatrix() {
 	return instance->orthoMatrix;
@@ -93,6 +97,7 @@ void Camera3D::InstanceCameraUpdate() {
 	cameraDirection = Transform3D::HomogeneousVector(Vec3::kBasisZ, camera.get_matrix());
 }
 
+#ifdef _DEBUG
 void Camera3D::_DebugGUI() {
 	ImGui::SetNextWindowSize(ImVec2{ 300,150 }, ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2{ 50, 50 }, ImGuiCond_Once);
@@ -100,6 +105,7 @@ void Camera3D::_DebugGUI() {
 	camera.debug_gui();
 	ImGui::End();
 }
+#endif // _DEBUG
 
 void Camera3D::MakeViewMatrix() {
 	viewMatrix = camera.get_matrix().inverse();

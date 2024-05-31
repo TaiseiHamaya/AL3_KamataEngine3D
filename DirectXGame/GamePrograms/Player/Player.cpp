@@ -2,7 +2,9 @@
 
 #include "Camera3D.h"
 #include <cassert>
-#include <imgui.h>
+#ifdef _DEBUG
+#include "imgui.h"
+#endif // _DEBUG
 #include <Input.h>
 #include <Sprite.h>
 #include <ViewProjection.h>
@@ -32,6 +34,7 @@ void Player::initialize(const std::shared_ptr<Model>& model_, uint32_t textureHa
 
 void Player::update() {
 	// imgui debug
+#ifdef _DEBUG
 	ImGui::SetNextWindowPos({ 50,250 }, ImGuiCond_Once);
 	ImGui::SetNextWindowSize({ 210,100 }, ImGuiCond_Once);
 	ImGui::Begin("Player", nullptr, ImGuiWindowFlags_NoSavedSettings);
@@ -39,6 +42,7 @@ void Player::update() {
 	ImGui::DragFloat3("Rotate", &worldTransform.rotation_.x, 0.02f);
 	ImGui::DragFloat3("Position", &worldTransform.translation_.x, 0.5f);
 	ImGui::End();
+#endif // _DEBUG
 	// input
 	Vector3 moveStickL;
 	XINPUT_STATE joyState;

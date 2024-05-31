@@ -1,6 +1,9 @@
 #include "RailCamera.h"
 
+#ifdef _DEBUG
 #include "imgui.h"
+#endif // _DEBUG
+
 #include <AxisIndicator.h>
 
 void RailCamera::initialize(Vector3&& position, Vector3&& rotate) {
@@ -27,11 +30,13 @@ void RailCamera::update() {
 	viewProjection.TransferMatrix();
 }
 
+#ifdef _DEBUG
 void RailCamera::update_debug(DebugCamera* debugCamera) {
 	viewProjection.matView = debugCamera->GetViewProjection().matView;
 	viewProjection.matProjection = debugCamera->GetViewProjection().matProjection;
 	viewProjection.TransferMatrix();
 }
+#endif // _DEBUG
 
 const ViewProjection& RailCamera::get_vp() {
 	return viewProjection;
