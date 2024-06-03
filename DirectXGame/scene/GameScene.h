@@ -50,6 +50,10 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	void Destroy();
+
+	void Collision();
+
 	void add_enemy_bullets(Vector3&& position);
 
 	void load_pop_data();

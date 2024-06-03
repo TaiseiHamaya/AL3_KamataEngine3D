@@ -88,44 +88,11 @@ void GameScene::Update() {
 	for (auto bulletsItr = enemyBullets.begin(); bulletsItr != enemyBullets.end(); ++bulletsItr) {
 		bulletsItr->update();
 	}
-	enemys.remove_if([](const Enemy& enemy) {
-		if (enemy.is_dead()) {
-			return true;
-		}
-		return false;
-		});
-	enemyBullets.remove_if([](const EnemyBullet& bullet) {
-		if (bullet.is_dead()) {
-			return true;
-		}
-		return false;
-		});
+	Destroy();
 
 	skydome->update();
 
-	std::list<PlayerBullet>& playerBullets = player->get_bullets();
-	for (auto playerBulletsItr = playerBullets.begin(); playerBulletsItr != playerBullets.end(); ++playerBulletsItr) {
-		for (auto enemyItr = enemys.begin(); enemyItr != enemys.end(); ++enemyItr) {
-			if (IsCollision(enemyItr->get_position(), playerBulletsItr->get_position())) {
-				enemyItr->on_collision();
-				playerBulletsItr->on_collision();
-			}
-		}
-	}
-	for (auto enmeyBulletsItr = enemyBullets.begin(); enmeyBulletsItr != enemyBullets.end(); ++enmeyBulletsItr) {
-		if (IsCollision(player->get_position(), enmeyBulletsItr->get_position())) {
-			player->on_collision();
-			enmeyBulletsItr->on_collision();
-		}
-	}
-	for (auto enmeyBulletsItr = enemyBullets.begin(); enmeyBulletsItr != enemyBullets.end(); ++enmeyBulletsItr) {
-		for (auto playerBulletsItr = playerBullets.begin(); playerBulletsItr != playerBullets.end(); ++playerBulletsItr) {
-			if (IsCollision(playerBulletsItr->get_position(), enmeyBulletsItr->get_position())) {
-				enmeyBulletsItr->on_collision();
-				playerBulletsItr->on_collision();
-			}
-		}
-	}
+	Collision();
 }
 
 void GameScene::Draw() {
@@ -181,6 +148,47 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::Destroy() {
+	enemys.remove_if([](const Enemy& enemy) {
+		if (enemy.is_dead()) {
+			return true;
+		}
+		return false;
+		});
+	enemyBullets.remove_if([](const EnemyBullet& bullet) {
+		if (bullet.is_dead()) {
+			return true;
+		}
+		return false;
+		});
+}
+
+void GameScene::Collision() {
+	std::list<PlayerBullet>& playerBullets = player->get_bullets();
+	for (auto playerBulletsItr = playerBullets.begin(); playerBulletsItr != playerBullets.end(); ++playerBulletsItr) {
+		for (auto enemyItr = enemys.begin(); enemyItr != enemys.end(); ++enemyItr) {
+			if (IsCollision(enemyItr->get_position(), playerBulletsItr->get_position())) {
+				enemyItr->on_collision();
+				playerBulletsItr->on_collision();
+			}
+		}
+	}
+	for (auto enmeyBulletsItr = enemyBullets.begin(); enmeyBulletsItr != enemyBullets.end(); ++enmeyBulletsItr) {
+		if (IsCollision(player->get_position(), enmeyBulletsItr->get_position())) {
+			player->on_collision();
+			enmeyBulletsItr->on_collision();
+		}
+	}
+	for (auto enmeyBulletsItr = enemyBullets.begin(); enmeyBulletsItr != enemyBullets.end(); ++enmeyBulletsItr) {
+		for (auto playerBulletsItr = playerBullets.begin(); playerBulletsItr != playerBullets.end(); ++playerBulletsItr) {
+			if (IsCollision(playerBulletsItr->get_position(), enmeyBulletsItr->get_position())) {
+				enmeyBulletsItr->on_collision();
+				playerBulletsItr->on_collision();
+			}
+		}
+	}
 }
 
 void GameScene::add_enemy_bullets(Vector3&& position) {
