@@ -22,7 +22,8 @@ void Player::initialize(const std::shared_ptr<Model>& model_, uint32_t textureHa
 	worldTransform.Initialize();
 	worldTransform.translation_ = position;
 
-	sprite.reset(Sprite::Create(reticleSpriteHandle, { 0,0 }, { 1,1,1,1 }, { 0.5f, 0.5f }));
+	sprite.reset(Sprite::Create(reticleSpriteHandle, { 0,0 }, { 1,1,1,1 }));
+	sprite->SetAnchorPoint({ 0.5f, 0.5f });
 	reticlePos = { static_cast<float>(WinApp::kWindowWidth / 2),static_cast<float>(WinApp::kWindowHeight / 2) };
 
 	transform3DReticle.Initialize();
@@ -105,7 +106,7 @@ void Player::update() {
 		}
 		static constexpr float kReticleMoveSpeed = 8;
 		reticlePos += moveStickR * kReticleMoveSpeed;
-		sprite->SetPosition(reticlePos - Vector2{ 64.0f, 64.0f });
+		sprite->SetPosition(reticlePos);
 
 		Matrix4x4 matrix = (refViewProjection->matView * refViewProjection->matProjection * Camera3D::GetViewPortMatrix()).inverse();
 
