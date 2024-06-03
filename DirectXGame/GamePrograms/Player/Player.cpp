@@ -22,8 +22,8 @@ void Player::initialize(const std::shared_ptr<Model>& model_, uint32_t textureHa
 	worldTransform.Initialize();
 	worldTransform.translation_ = position;
 
-	sprite.reset(Sprite::Create(reticleSpriteHandle, { 0,0 }, { 1,1,1,1 }));
-	//sprite->SetAnchorPoint(Vector2{ 0.5f,0.5f });
+	sprite.reset(Sprite::Create(reticleSpriteHandle, { 0,0 }, { 1,1,1,1 }, Vector2{ 0.5f,0.5f }));
+	//sprite->SetAnchorPoint();
 	reticlePos = { static_cast<float>(WinApp::kWindowWidth / 2),static_cast<float>(WinApp::kWindowHeight / 2) };
 
 	transform3DReticle.Initialize();
