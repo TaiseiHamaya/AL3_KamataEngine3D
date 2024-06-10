@@ -2,7 +2,9 @@
 
 #include <WorldTransform.h>
 #include <Model.h>
-#include <list>
+
+#include <vector>
+#include <functional>
 
 #include "EnemyBullet.h"
 
@@ -29,6 +31,10 @@ private:
 	void fire();
 	void init_approach();
 
+private:
+	void approach();
+	void withdrawal();
+
 public:
 	bool is_dead() const;
 	Vector3 get_position() const;
@@ -44,8 +50,12 @@ private: // メンバ変数
 	EnemyPhase phase;
 	int hitpoint;
 	int shotTimer;
-	static constexpr int shotInterval = 60;
 
 	Player* pPlayer;
 	GameScene* gameScene;
+
+private:
+	static constexpr int SHOT_INTERVAL = 60;
+
+	static std::vector<void(Enemy::*)(void)> FUNC_TABLE;
 };

@@ -51,18 +51,18 @@ void Player::update() {
 		moveStickL.x += float(joyState.Gamepad.sThumbLX) / (std::numeric_limits<short>::max)();
 		moveStickL.y += float(joyState.Gamepad.sThumbLY) / (std::numeric_limits<short>::max)();
 	}
-	//if (input->PushKey(DIK_LEFT)) {
-	//	moveStickL.x -= 1;
-	//}
-	//if (input->PushKey(DIK_RIGHT)) {
-	//	moveStickL.x += 1;
-	//}
-	//if (input->PushKey(DIK_UP)) {
-	//	moveStickL.y += 1;
-	//}
-	//if (input->PushKey(DIK_DOWN)) {
-	//	moveStickL.y -= 1;
-	//}
+	if (input->PushKey(DIK_LEFT)) {
+		moveStickL.x -= 1;
+	}
+	if (input->PushKey(DIK_RIGHT)) {
+		moveStickL.x += 1;
+	}
+	if (input->PushKey(DIK_UP)) {
+		moveStickL.y += 1;
+	}
+	if (input->PushKey(DIK_DOWN)) {
+		moveStickL.y -= 1;
+	}
 
 	// moveStickL
 	if (moveStickL != Vec3::kZero) {
@@ -81,19 +81,19 @@ void Player::update() {
 	// update
 	worldTransform.UpdateMatrix();
 
-	//{
-	//	constexpr float ReticleDistancce = 40.0f;
-	//	Vector3 offset = Transform3D::Homogeneous(Vec3::kBasisZ * ReticleDistancce, worldTransform.matWorld_);
-	//	transform3DReticle.translation_ = offset;
+	{
+		constexpr float ReticleDistancce = 40.0f;
+		Vector3 offset = Transform3D::Homogeneous(Vec3::kBasisZ * ReticleDistancce, worldTransform.matWorld_);
+		transform3DReticle.translation_ = offset;
 
-	//	transform3DReticle.UpdateMatrix();
+		transform3DReticle.UpdateMatrix();
 
-	//	Vector3 reticlePosition = Transform3D::Homogeneous(
-	//		Transform3D::ExtractPosition(transform3DReticle.matWorld_),
-	//		refViewProjection->matView * refViewProjection->matProjection * Camera3D::GetViewPortMatrix());
+		Vector3 reticlePosition = Transform3D::Homogeneous(
+			Transform3D::ExtractPosition(transform3DReticle.matWorld_),
+			refViewProjection->matView * refViewProjection->matProjection * Camera3D::GetViewPortMatrix());
 
-	//	sprite->SetPosition({reticlePosition.x - 64, reticlePosition.y - 64 });
-	//}
+		sprite->SetPosition({ reticlePosition.x, reticlePosition.y });
+	}
 
 	{
 		//POINT mousePosition;
