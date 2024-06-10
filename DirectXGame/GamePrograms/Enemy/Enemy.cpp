@@ -6,11 +6,7 @@
 #include "Player/Player.h"
 #include "GameScene.h"
 #include "Transform3D.h"
-
-std::vector<void(Enemy::*)(void)> Enemy::FUNC_TABLE{
-	&Enemy::approach,
-	&Enemy::withdrawal
-};
+#include "BaseEnemyState.h"
 
 Enemy::Enemy() : pPlayer(nullptr) {
 	hitpoint = 10;
@@ -22,8 +18,8 @@ void Enemy::initialize(const std::weak_ptr<Model>& model_, const Vector3& positi
 	worldTransform.translation_ = position;
 	model = model_;
 	velocity = { 0,0,-0.5f };
-	phase = EnemyPhase::kEnemyPhaseApproach;
-	init_approach();
+	worldTransform.UpdateMatrix();
+	set_state(new EnemyStateApproch);
 }
 
 void Enemy::update() {
@@ -41,7 +37,7 @@ void Enemy::update() {
 	//}
 	//ImGui::End();
 
-	(this->*FUNC_TABLE[static_cast<std::uint32_t>(phase)])();
+	state->update();
 
 	worldTransform.translation_ += velocity;
 	worldTransform.UpdateMatrix();
@@ -57,25 +53,6 @@ void Enemy::on_collision() {
 
 void Enemy::fire() {
 	gameScene->add_enemy_bullets(get_position());
-	shotTimer = SHOT_INTERVAL;
-}
-
-void Enemy::init_approach() {
-	shotTimer = SHOT_INTERVAL;
-}
-
-void Enemy::approach() {
-	--shotTimer;
-	if (shotTimer == 0) {
-		fire();
-	}
-	if (worldTransform.translation_.z <= 0) {
-		velocity = { 0, 0.1f, 0 };
-		phase = EnemyPhase::kEnemyPhaseWithdrawal;
-	}
-}
-
-void Enemy::withdrawal() {
 }
 
 bool Enemy::is_dead() const {
@@ -92,4 +69,13 @@ void Enemy::set_player(Player* player) {
 
 void Enemy::set_game_scene(GameScene* gameScene_) {
 	gameScene = gameScene_;
+}
+
+void Enemy::set_velocity(Vector3&& velocity_) {
+	velocity = velocity_;
+}
+
+void Enemy::set_state(BaseEnemyState* newState) {
+	state = newState;
+	state->set_enemy(this);
 }

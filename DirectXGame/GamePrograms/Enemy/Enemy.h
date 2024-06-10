@@ -4,17 +4,12 @@
 #include <Model.h>
 
 #include <vector>
-#include <functional>
 
 #include "EnemyBullet.h"
 
 class Player;
 class GameScene;
-
-enum class EnemyPhase {
-	kEnemyPhaseApproach,
-	kEnemyPhaseWithdrawal,
-};
+class BaseEnemyState;
 
 class Enemy {
 public: // コンストラクタ
@@ -26,14 +21,7 @@ public: // publicメンバ関数
 	void update();
 	void draw(const ViewProjection& viewProjection) const;
 	void on_collision();
-
-private:
 	void fire();
-	void init_approach();
-
-private:
-	void approach();
-	void withdrawal();
 
 public:
 	bool is_dead() const;
@@ -41,21 +29,18 @@ public:
 
 	void set_player(Player* player);
 	void set_game_scene(GameScene* gameScene_);
+	void set_velocity(Vector3&& velocity_);
+	void set_state(BaseEnemyState* newState);
 
 private: // メンバ変数
 	WorldTransform worldTransform;
 	std::weak_ptr<Model> model;
 	uint32_t textureHandle;
 	Vector3 velocity;
-	EnemyPhase phase;
 	int hitpoint;
-	int shotTimer;
+
+	BaseEnemyState* state;
 
 	Player* pPlayer;
 	GameScene* gameScene;
-
-private:
-	static constexpr int SHOT_INTERVAL = 60;
-
-	static std::vector<void(Enemy::*)(void)> FUNC_TABLE;
 };
