@@ -7,8 +7,15 @@ void EnemyBullet::initialize(std::weak_ptr<Model> p_model, const Vector3& positi
 	model = p_model;
 	transform.Initialize();
 	transform.translation_ = position;
+	transform.scale_ = { 0.5f, 0.5f, 3.0f };
 	textureHandle = TextureManager::Load("Red.png");
 	velocity = direction * speed;
+
+	transform.rotation_.y = std::atan2(velocity.x, velocity.z);
+
+	float xzLength = Vector2{ velocity.x, velocity.z }.length();
+	transform.rotation_.x = std::atan2(-velocity.y, xzLength);
+
 	isDead = false;
 	deathTimer = LifeTime;
 }
