@@ -1,6 +1,7 @@
 #pragma once
 
 class Enemy;
+#include "TimedCall.h"
 
 class BaseEnemyState {
 public:
@@ -9,7 +10,7 @@ public:
 
 public:
 	virtual void update() = 0;
-	void set_enemy(Enemy* enemy_);
+	virtual void set_enemy(Enemy* enemy_);
 
 protected:
 	Enemy* enemy;
@@ -22,9 +23,11 @@ public:
 
 public:
 	void update();
+	void set_enemy(Enemy* enemy_) override;
+	void reset_call();
 
 private:
-	int shotTimer;
+	TimedCall<void(void)> shotTimer;
 
 	static constexpr int SHOT_INTERVAL = 60;
 };

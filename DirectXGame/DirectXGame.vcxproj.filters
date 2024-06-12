@@ -129,6 +129,9 @@
     <ClCompile Include="GamePrograms\Enemy\BaseEnemyState.cpp">
       <Filter>ソース ファイル\scene\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="GamePrograms\TimedCall.cpp">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -256,6 +259,9 @@
     </ClInclude>
     <ClInclude Include="GamePrograms\Enemy\BaseEnemyState.h">
       <Filter>ヘッダー ファイル\scene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePrograms\TimedCall.h">
+      <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

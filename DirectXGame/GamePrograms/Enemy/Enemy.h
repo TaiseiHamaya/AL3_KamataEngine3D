@@ -3,8 +3,6 @@
 #include <WorldTransform.h>
 #include <Model.h>
 
-#include <vector>
-
 #include "EnemyBullet.h"
 
 class Player;

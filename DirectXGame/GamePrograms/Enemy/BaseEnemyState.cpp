@@ -10,20 +10,28 @@ void BaseEnemyState::set_enemy(Enemy* enemy_) {
 	enemy = enemy_;
 }
 
-EnemyStateApproch::EnemyStateApproch() {
-	shotTimer = SHOT_INTERVAL;
+EnemyStateApproch::EnemyStateApproch() :
+	shotTimer(nullptr, 0) {
 }
 
 void EnemyStateApproch::update() {
-	--shotTimer;
-	if (shotTimer == 0) {
-		enemy->fire();
-		shotTimer = SHOT_INTERVAL;
+	shotTimer.update();
+	if (shotTimer.is_finished()) {
+		reset_call();
 	}
 	if (enemy->get_position().z <= 0) {
 		enemy->set_velocity({ 0, 0.1f, 0 });
 		enemy->set_state(new EnemyStateWithdrawal);
 	}
+}
+
+void EnemyStateApproch::set_enemy(Enemy* enemy_) {
+	BaseEnemyState::set_enemy(enemy_);
+	reset_call();
+}
+
+void EnemyStateApproch::reset_call() {
+	shotTimer = { std::bind(&Enemy::fire, enemy), SHOT_INTERVAL };
 }
 
 void EnemyStateWithdrawal::update() {
