@@ -55,6 +55,8 @@ void GameScene::Initialize() {
 	debugCamera = new DebugCamera{ WinApp::kWindowWidth, WinApp::kWindowHeight };
 	AxisIndicator::GetInstance()->SetVisible(true);
 
+	EnemyBullet::SetPlayer(player.get());
+
 	waitTime = 0;
 	load_pop_data();
 }

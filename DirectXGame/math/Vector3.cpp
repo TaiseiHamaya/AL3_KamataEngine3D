@@ -81,3 +81,18 @@ Vector3 Vector3::Abs(const Vector3& vector) {
 Vector3 Vector3::Clamp(const Vector3& vector, const Vector3& min, const Vector3& max) {
 	return { std::clamp(vector.x, min.x, max.x),std::clamp(vector.y, min.y, max.y) ,std::clamp(vector.z, min.z, max.z) };
 }
+
+Vector3 Vector3::Slerp(const Vector3& from, const Vector3& to, const float& t) {
+	float dot = Vector3::DotProduct(from, to);
+	if (dot >= 0.9999f) {
+		return Lerp(from, to, t).normalize();
+	}
+
+	float theta = std::acos(dot);
+	float sinT = std::sin(theta);
+
+	float factor0 = std::sin((1 - t) * theta) / sinT;
+	float factor1 = std::sin(t * theta) / sinT;
+
+	return from * factor0 + to * factor1;
+}

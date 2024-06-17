@@ -165,6 +165,8 @@ public:
 	static Vector3 Abs(const Vector3& vector);
 
 	static Vector3 Clamp(const Vector3& vector, const Vector3& min, const Vector3& max);
+
+	static Vector3 Slerp(const Vector3& from, const Vector3& to, const float& t);
 };
 
 // ------------------インライン関数定義------------------
