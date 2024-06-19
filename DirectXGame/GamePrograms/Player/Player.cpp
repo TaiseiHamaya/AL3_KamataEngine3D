@@ -31,6 +31,8 @@ void Player::initialize(const std::shared_ptr<Model>& model_, uint32_t textureHa
 	input = Input::GetInstance();
 
 	bullets.clear();
+
+	set_radius(2.5f);
 }
 
 void Player::update() {

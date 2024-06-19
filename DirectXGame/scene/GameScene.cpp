@@ -8,12 +8,17 @@
 
 #include "Camera3D.h"
 
+#include "Collider.h"
+
 #ifdef _DEBUG
 #include "imgui.h"
 #endif // _DEBUG
 
-bool IsCollision(const Vector3& pos1, const Vector3& pos2) {
-	return (pos1 - pos2).length() < 3.0f;
+void IsCollision(Collider* const collider1, Collider* const collider2) {
+	if ((collider1->get_position() - collider2->get_position()).length() < collider1->get_radius() + collider2->get_radius()) {
+		collider1->on_collision();
+		collider2->on_collision();
+	}
 }
 
 GameScene::GameScene() {
@@ -108,24 +113,15 @@ void GameScene::Update() {
 	std::list<PlayerBullet>& playerBullets = player->get_bullets();
 	for (auto playerBulletsItr = playerBullets.begin(); playerBulletsItr != playerBullets.end(); ++playerBulletsItr) {
 		for (auto enemyItr = enemys.begin(); enemyItr != enemys.end(); ++enemyItr) {
-			if (IsCollision(enemyItr->get_position(), playerBulletsItr->get_position())) {
-				enemyItr->on_collision();
-				playerBulletsItr->on_collision();
-			}
+			IsCollision(&*enemyItr, &*playerBulletsItr);
 		}
 	}
 	for (auto enmeyBulletsItr = enemyBullets.begin(); enmeyBulletsItr != enemyBullets.end(); ++enmeyBulletsItr) {
-		if (IsCollision(player->get_position(), enmeyBulletsItr->get_position())) {
-			player->on_collision();
-			enmeyBulletsItr->on_collision();
-		}
+		IsCollision(&*player, &*enmeyBulletsItr);
 	}
 	for (auto enmeyBulletsItr = enemyBullets.begin(); enmeyBulletsItr != enemyBullets.end(); ++enmeyBulletsItr) {
 		for (auto playerBulletsItr = playerBullets.begin(); playerBulletsItr != playerBullets.end(); ++playerBulletsItr) {
-			if (IsCollision(playerBulletsItr->get_position(), enmeyBulletsItr->get_position())) {
-				enmeyBulletsItr->on_collision();
-				playerBulletsItr->on_collision();
-			}
+			IsCollision(&*playerBulletsItr, &*enmeyBulletsItr);
 		}
 	}
 }

@@ -5,11 +5,13 @@
 
 #include "EnemyBullet.h"
 
+#include "Collider.h"
+
 class Player;
 class GameScene;
 class BaseEnemyState;
 
-class Enemy {
+class Enemy : public Collider {
 public: // コンストラクタ
 	Enemy();
 	~Enemy() = default;
@@ -18,12 +20,13 @@ public: // publicメンバ関数
 	void initialize(const std::weak_ptr<Model>& model_, const Vector3& position, uint32_t textureHandle_);
 	void update();
 	void draw(const ViewProjection& viewProjection) const;
-	void on_collision();
 	void fire();
 
 public:
 	bool is_dead() const;
-	Vector3 get_position() const;
+
+	void on_collision() override;
+	Vector3 get_position() const override;
 
 	void set_player(Player* player);
 	void set_game_scene(GameScene* gameScene_);

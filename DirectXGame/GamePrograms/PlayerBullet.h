@@ -5,18 +5,20 @@
 #include <WorldTransform.h>
 #include <memory>
 
-class PlayerBullet {
+#include "Collider.h"
+
+class PlayerBullet : public Collider {
 public:
 	void initialize(std::weak_ptr<Model>& p_model, const Vector3& position, const Vector3& velocity_);
 	void update();
 	void draw(const ViewProjection& viewProjection) const;
-	void on_collision();
 
 public:
 	bool is_dead() const { return isDead; }
 
 public:
-	Vector3 get_position() const;
+	virtual void on_collision();
+	virtual Vector3 get_position() const;
 
 private:
 	static constexpr std::uint32_t LifeTime = 60 * 5;

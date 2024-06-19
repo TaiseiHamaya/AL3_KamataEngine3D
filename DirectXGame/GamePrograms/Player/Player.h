@@ -6,11 +6,12 @@
 #include <Model.h>
 
 #include "PlayerBullet.h"
+#include "Collider.h"
 
 class Input;
 class Sprite;
 
-class Player {
+class Player : public Collider {
 public: // コンストラクタ
 	Player() = default;
 	~Player();
@@ -20,7 +21,8 @@ public: // publicメンバ関数
 	void update();
 	void draw(const ViewProjection& viewProjection) const;
 	void draw_ui();
-	void on_collision();
+
+	void on_collision() override;
 
 private: //privateメンバ関数
 	void attack();

@@ -5,9 +5,11 @@
 #include <WorldTransform.h>
 #include <memory>
 
+#include "Collider.h"
+
 class Player;
 
-class EnemyBullet {
+class EnemyBullet : public Collider {
 public:
 	void initialize(std::weak_ptr<Model> p_model, const Vector3& position, const Vector3& velocity_);
 	void update();
