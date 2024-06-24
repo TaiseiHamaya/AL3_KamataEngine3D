@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <cmath>
+#include <algorithm>
 
 float Vector2::length() const {
 	return std::sqrt(x * x + y * y);
@@ -79,4 +80,8 @@ Vector2 Vector2::Bezier(const Vector2& initial, const Vector2& control, const Ve
 
 Vector2 Vector2::Abs(const Vector2& vector) {
 	return { std::abs(vector.x), std::abs(vector.y) };
+}
+
+Vector2 Vector2::Clamp(const Vector2& vector, const Vector2& min, const Vector2& max) {
+	return { std::clamp(vector.x, min.x, max.x),std::clamp(vector.y, min.y, max.y) };
 }

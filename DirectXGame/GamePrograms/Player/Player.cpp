@@ -2,16 +2,15 @@
 
 #include "Camera3D.h"
 #include <cassert>
-#ifdef _DEBUG
-#include "imgui.h"
-#endif // _DEBUG
 #include <Input.h>
 #include <Sprite.h>
 #include <ViewProjection.h>
 #include <WinApp.h>
-
 #include <math/Transform3D.h>
-#include <windef.h>
+
+#ifdef _DEBUG
+#include "imgui.h"
+#endif // _DEBUG
 
 Player::~Player() = default;
 
@@ -33,6 +32,8 @@ void Player::initialize(const std::shared_ptr<Model>& model_, uint32_t textureHa
 	bullets.clear();
 
 	set_radius(2.5f);
+	collisionAttribute = 0b0001;
+	collisionMask = 0b1000;
 }
 
 void Player::update() {
@@ -108,6 +109,7 @@ void Player::update() {
 		}
 		static constexpr float kReticleMoveSpeed = 8;
 		reticlePos += moveStickR * kReticleMoveSpeed;
+		reticlePos = Vector2::Clamp(reticlePos, { 64, 64 }, { 1216, 656 });
 		sprite->SetPosition(reticlePos);
 
 		Matrix4x4 matrix = (refViewProjection->matView * refViewProjection->matProjection * Camera3D::GetViewPortMatrix()).inverse();

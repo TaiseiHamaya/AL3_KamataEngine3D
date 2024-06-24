@@ -22,13 +22,13 @@ public: // publicメンバ関数
 	void draw(const ViewProjection& viewProjection) const;
 	void draw_ui();
 
-	void on_collision() override;
-
 private: //privateメンバ関数
 	void attack();
 
 public:
-	Vector3 get_position() const;
+	Vector3 get_position() const override;
+	void on_collision() override;
+
 	std::list<PlayerBullet>& get_bullets();
 	const std::list<PlayerBullet>& get_bullets() const;
 

@@ -14,11 +14,11 @@ public:
 	void initialize(std::weak_ptr<Model> p_model, const Vector3& position, const Vector3& velocity_);
 	void update();
 	void draw(const ViewProjection& viewProjection) const;
-	void on_collision();
 
 public:
 	bool is_dead() const { return isDead; }
-	Vector3 get_position() const;
+	void on_collision() override;
+	Vector3 get_position() const override;
 
 private:
 	void set_direction();

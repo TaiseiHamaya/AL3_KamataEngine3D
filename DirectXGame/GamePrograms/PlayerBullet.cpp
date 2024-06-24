@@ -11,6 +11,10 @@ void PlayerBullet::initialize(std::weak_ptr<Model>& p_model, const Vector3& posi
 	velocity = velocity_;
 	isDead = false;
 	deathTimer = LifeTime;
+
+	set_radius(2.5f);
+	collisionAttribute = 0b0010;
+	collisionMask = 0b1100;
 }
 
 void PlayerBullet::update() {

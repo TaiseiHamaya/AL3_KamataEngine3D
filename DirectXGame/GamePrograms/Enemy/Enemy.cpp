@@ -20,6 +20,10 @@ void Enemy::initialize(const std::weak_ptr<Model>& model_, const Vector3& positi
 	velocity = { 0,0,-0.5f };
 	worldTransform.UpdateMatrix();
 	set_state(new EnemyStateApproch);
+
+	set_radius(2.5f);
+	collisionAttribute = 0b0100;
+	collisionMask = 0b0010;
 }
 
 void Enemy::update() {

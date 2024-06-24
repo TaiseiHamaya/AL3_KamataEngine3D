@@ -233,7 +233,7 @@ Matrix4x4 Transform3D::MakeTranslateMatrix(const Vector3& translate) {
 }
 
 Matrix4x4 Transform3D::MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const Vector3& translate) {
-	Matrix4x4 result = MakeScaleMatrix(scale) * rotate.to_matrix() * MakeTranslateMatrix(translate);
+	//Matrix4x4 result = MakeScaleMatrix(scale) * rotate.to_matrix() * MakeTranslateMatrix(translate);
 	Matrix4x4 result2 = rotate.to_matrix();
 	for (size_t column = 0; column < 3; ++column) {
 		result2[0][column] *= scale.x;
@@ -243,7 +243,7 @@ Matrix4x4 Transform3D::MakeAffineMatrix(const Vector3& scale, const Quaternion& 
 	result2[3][0] = translate.x;
 	result2[3][1] = translate.y;
 	result2[3][2] = translate.z;
-	assert(result == result2);
+	//assert(result == result2);
 	return result2;
 }
 

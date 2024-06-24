@@ -21,6 +21,10 @@ void EnemyBullet::initialize(std::weak_ptr<Model> p_model, const Vector3& positi
 
 	isDead = false;
 	deathTimer = LifeTime;
+
+	set_radius(2.5f);
+	collisionAttribute = 0b1000;
+	collisionMask = 0b0011;
 }
 
 void EnemyBullet::update() {

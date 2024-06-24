@@ -181,6 +181,8 @@ public:
 	/// <returns></returns>
 	static Vector2 Abs(const Vector2& vector);
 
+	static Vector2 Clamp(const Vector2& vector, const Vector2& min, const Vector2& max);
+
 };
 
 /// <summary>
