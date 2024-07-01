@@ -111,6 +111,7 @@
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="GamePrograms\Collider.cpp" />
+    <ClCompile Include="GamePrograms\CollisitonManager.cpp" />
     <ClCompile Include="GamePrograms\Enemy\BaseEnemyState.cpp" />
     <ClCompile Include="GamePrograms\Enemy\EnemyBullet.cpp" />
     <ClCompile Include="GamePrograms\PlayerBullet.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="GamePrograms\Collider.h" />
+    <ClInclude Include="GamePrograms\CollisitonManager.h" />
     <ClInclude Include="GamePrograms\Enemy\BaseEnemyState.h" />
     <ClInclude Include="GamePrograms\Enemy\EnemyBullet.h" />
     <ClInclude Include="GamePrograms\PlayerBullet.h" />

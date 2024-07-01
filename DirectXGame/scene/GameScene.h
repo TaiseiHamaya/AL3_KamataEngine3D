@@ -13,6 +13,7 @@
 #include "Player/Player.h"
 #include "Enemy/Enemy.h"
 #include "RailCamera.h"
+#include "CollisitonManager.h"
 
 #include <memory>
 
@@ -50,6 +51,8 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	void collision();
+
 	void add_enemy_bullets(Vector3&& position);
 
 	void load_pop_data();
@@ -79,6 +82,8 @@ private: // メンバ変数
 	std::list<EnemyBullet> enemyBullets;
 
 	std::stringstream enemyPopCommands;
+
+	std::unique_ptr<CollisitonManager> collisionManager;
 
 	bool isDebugCameraActive;
 	DebugCamera* debugCamera;

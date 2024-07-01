@@ -14,17 +14,6 @@
 #include "imgui.h"
 #endif // _DEBUG
 
-void IsCollision(Collider* const collider1, Collider* const collider2) {
-	if (!((collider1->get_collision_attribute() & collider2->get_collision_mask()) ||
-		(collider2->get_collision_attribute() & collider1->get_collision_mask()))) {
-		return;
-	}
-	if ((collider1->get_position() - collider2->get_position()).length() < collider1->get_radius() + collider2->get_radius()) {
-		collider1->on_collision();
-		collider2->on_collision();
-	}
-}
-
 GameScene::GameScene() {
 }
 
@@ -66,11 +55,14 @@ void GameScene::Initialize() {
 
 	EnemyBullet::SetPlayer(player.get());
 
+	collisionManager = std::make_unique<CollisitonManager>();
+
 	waitTime = 0;
 	load_pop_data();
 }
 
 void GameScene::Update() {
+	collisionManager->reset();
 	update_pop_command();
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_F1)) {
@@ -114,26 +106,8 @@ void GameScene::Update() {
 
 	skydome->update();
 
-	std::list<PlayerBullet>& playerBullets = player->get_bullets();
-
-	std::list<Collider*> colliderObjects;
-	colliderObjects.emplace_back(player.get());
-	for (auto playerBulletsItr = playerBullets.begin(); playerBulletsItr != playerBullets.end(); ++playerBulletsItr) {
-		colliderObjects.emplace_back(&*playerBulletsItr);
-	}
-	for (auto enemyItr = enemys.begin(); enemyItr != enemys.end(); ++enemyItr) {
-		colliderObjects.emplace_back(&*enemyItr);
-	}
-	for (auto enmeyBulletsItr = enemyBullets.begin(); enmeyBulletsItr != enemyBullets.end(); ++enmeyBulletsItr) {
-		colliderObjects.emplace_back(&*enmeyBulletsItr);
-	}
-
-	for (auto colliderItrA = colliderObjects.begin(); colliderItrA != std::prev(colliderObjects.end()); ++colliderItrA) {
-		for (auto colliderItrB = std::next(colliderItrA); colliderItrB != colliderObjects.end(); ++colliderItrB) {
-			IsCollision(*colliderItrA, *colliderItrB);
-		}
-	}
-	}
+	collision();
+}
 
 void GameScene::Draw() {
 
@@ -188,6 +162,21 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::collision() {
+	std::list<PlayerBullet>& playerBullets = player->get_bullets();
+	collisionManager->add_collider(player.get());
+	for (auto playerBulletsItr = playerBullets.begin(); playerBulletsItr != playerBullets.end(); ++playerBulletsItr) {
+		collisionManager->add_collider(&*playerBulletsItr);
+	}
+	for (auto enemyItr = enemys.begin(); enemyItr != enemys.end(); ++enemyItr) {
+		collisionManager->add_collider(&*enemyItr);
+	}
+	for (auto enmeyBulletsItr = enemyBullets.begin(); enmeyBulletsItr != enemyBullets.end(); ++enmeyBulletsItr) {
+		collisionManager->add_collider(&*enmeyBulletsItr);
+	}
+	collisionManager->collision();
 }
 
 void GameScene::add_enemy_bullets(Vector3&& position) {
