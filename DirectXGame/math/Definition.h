@@ -2,6 +2,9 @@
 
 #include <cassert>
 #include <numbers>
+#include <vector>
+#include <cmath>
+#include <algorithm>
 
 #include "Matrix.h"
 #include "Vector2.h"
@@ -18,6 +21,11 @@ const Vector2 operator*(const Vector2& vec, const Matrix<2, 2>& mat);
 template<class type>
 void MemClear(type*& mem);
 
+template<class Type>
+Type CatmullRom(const Type& p0, const Type& p1, const Type& p2, const Type& p3, float t);
+
+template<class Type>
+Type CatmullRom(std::vector<Type>& points, float t);
 
 ///-------------------///
 ///   ここから定義     ///
@@ -27,6 +35,33 @@ template<class type>
 inline void MemClear(type*& mem) {
 	delete mem;
 	mem = nullptr;
+}
+
+template<class Type>
+inline Type CatmullRom(const Type& p0, const Type& p1, const Type& p2, const Type& p3, float t) {
+	return (
+		(-p0 + p1 * 3 - p2 * 3 + p3) * t * t * t +
+		(p0 * 2 - p1 * 5 + p2 * 4 - p3) * t * t +
+		(-p0 + p2) * t +
+		p1 * 2) / 2;
+}
+
+template<class Type>
+inline Type CatmullRom(std::vector<Type>& points, float t) {
+	assert(points.size() >= 4);
+	uint32_t division = static_cast<std::uint32_t > (points.size() - 1);
+
+	//float width = 1.0f / division;
+	float interveningWidth = std::clamp(std::fmod(t * division, 1.0f), 0.0f, 1.0f);
+
+	uint32_t baseIndex = static_cast<uint32_t>(t * division);
+
+	uint32_t index0 = baseIndex != 0 ? baseIndex - 1 : 0;
+	uint32_t index1 = baseIndex;
+	uint32_t index2 = baseIndex + 1;
+	uint32_t index3 = index2 < division ? baseIndex + 2 : index2;
+
+	return CatmullRom(points[index0], points[index1], points[index2], points[index3], interveningWidth);
 }
 
 class Animation {

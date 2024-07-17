@@ -4,6 +4,8 @@
 #include <ViewProjection.h>
 #include <DebugCamera.h>
 
+#include <vector>
+
 class RailCamera {
 public:
 	void initialize(Vector3&& position, Vector3&& rotate);
@@ -11,6 +13,7 @@ public:
 
 #ifdef _DEBUG
 	void update_debug(DebugCamera* debugCamera);
+	void draw();
 #endif // _DEBUG
 
 	const ViewProjection& get_vp();
@@ -19,4 +22,6 @@ public:
 private:
 	WorldTransform transform;
 	ViewProjection viewProjection;
+
+	std::vector<Vector3> worldDrawPoints;
 };

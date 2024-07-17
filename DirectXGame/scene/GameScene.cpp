@@ -144,6 +144,8 @@ void GameScene::Draw() {
 		bulletsItr->draw(railCamera->get_vp());
 	}
 
+	railCamera->draw();
+
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
