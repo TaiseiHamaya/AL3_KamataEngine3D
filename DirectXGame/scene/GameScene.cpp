@@ -69,10 +69,11 @@ void GameScene::Update() {
 		isDebugCameraActive = !isDebugCameraActive;
 	}
 	if (isDebugCameraActive) {
+		railCamera->update();
 		if (!ImGui::GetIO().WantCaptureMouse) {
 			debugCamera->Update();
-			railCamera->update_debug(debugCamera);
 		}
+		railCamera->update_debug(debugCamera);
 	}
 	else {
 		railCamera->update();

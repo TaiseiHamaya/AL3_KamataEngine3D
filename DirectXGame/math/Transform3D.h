@@ -132,7 +132,7 @@ public:// static関数
 	/// <param name="costheta">回転</param>
 	/// <param name="translate">移動</param>
 	/// <returns></returns>
-	static Matrix4x4 MakeAffineMatrix(const Vector3& scale, const float sintheta, const float costheta, const Vector3& translate);
+	static Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
 
 	/// <summary>
 	/// 2次元ベクトルの同次座標系乗算

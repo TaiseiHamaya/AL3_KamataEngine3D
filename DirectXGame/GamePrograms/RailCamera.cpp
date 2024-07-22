@@ -14,9 +14,8 @@ void RailCamera::initialize(Vector3&& position, Vector3&& rotate) {
 	transform.Initialize();
 	transform.translation_ = position;
 	transform.rotation_ = rotate;
+	transform.scale_ = Vec3::kBasis;
 	viewProjection.Initialize();
-
-	std::vector<Vector3> controlPoints;
 	controlPoints = {
 		{0, 0, 0},
 		{10, 10, 0},
@@ -26,25 +25,42 @@ void RailCamera::initialize(Vector3&& position, Vector3&& rotate) {
 		{30, 0, 0}
 	};
 
-	const uint32_t segmentCount = 128;
-
-	for (int i = 0; i < segmentCount; ++i) {
+	for (std::uint32_t i = 0; i < segmentCount; ++i) {
 		worldDrawPoints.emplace_back(CatmullRom(controlPoints, 1.0f / segmentCount * i));
 	}
+
+	currentFrame = 0;
+	isMove = true;
 }
 
 void RailCamera::update() {
 #ifdef _DEBUG
-	ImGui::SetNextWindowPos({ 50,50 }, ImGuiCond_Once);
-	ImGui::SetNextWindowSize({ 210,80 }, ImGuiCond_Once);
+	ImGui::SetNextWindowPos({ 50, 50 }, ImGuiCond_Once);
+	ImGui::SetNextWindowSize({ 210, 150 }, ImGuiCond_Once);
 	ImGui::Begin("Camera", nullptr, ImGuiWindowFlags_NoSavedSettings);
 	ImGui::DragFloat3("Position", &transform.translation_.x, 0.1f);
 	ImGui::DragFloat3("Rotate", &transform.rotation_.x, 0.1f);
+	ImGui::DragFloat3("Scale", &transform.scale_.x, 0.1f);
+	ImGui::Separator();
+	ImGui::Checkbox("Play", &isMove);
+	ImGui::DragInt("RailCurrent", &currentFrame, 1.0f, 0, totalFrame);
 	ImGui::End();
 #endif // _DEBUG
 
-	//transform.translation_.z += 0.1f;
-	transform.UpdateMatrix();
+	if (isMove && currentFrame < totalFrame - 1) {
+		++currentFrame;
+	}
+
+	transform.translation_ = CatmullRom(controlPoints, 1.0f / totalFrame * currentFrame);
+
+	Vector3 lookAt = (CatmullRom(controlPoints, 1.0f / totalFrame * (currentFrame + 1)) - transform.translation_);
+
+	transform.rotation_.y = std::atan2(lookAt.x, lookAt.z);
+
+	float xzLength = Vector2{ lookAt.x, lookAt.z }.length();
+	transform.rotation_.x = std::atan2(-lookAt.y, xzLength);
+
+ 	transform.UpdateMatrix();
 	viewProjection.matView = transform.matWorld_.inverse();
 	viewProjection.TransferMatrix();
 }

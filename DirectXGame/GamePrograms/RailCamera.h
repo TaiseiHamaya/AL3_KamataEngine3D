@@ -24,4 +24,11 @@ private:
 	ViewProjection viewProjection;
 
 	std::vector<Vector3> worldDrawPoints;
+	std::vector<Vector3> controlPoints;
+
+	const std::uint32_t segmentCount = 128;
+	const std::int32_t totalFrame = 60 * 60;
+	std::int32_t currentFrame;
+
+	bool isMove;
 };

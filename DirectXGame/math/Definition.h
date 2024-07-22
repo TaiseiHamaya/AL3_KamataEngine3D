@@ -51,10 +51,9 @@ inline Type CatmullRom(std::vector<Type>& points, float t) {
 	assert(points.size() >= 4);
 	uint32_t division = static_cast<std::uint32_t > (points.size() - 1);
 
-	//float width = 1.0f / division;
-	float interveningWidth = std::clamp(std::fmod(t * division, 1.0f), 0.0f, 1.0f);
+	float interveningWidth = std::fmod(t * division, 1.0f) + static_cast<int32_t>(t);
 
-	uint32_t baseIndex = static_cast<uint32_t>(t * division);
+	uint32_t baseIndex = t < 1 ? static_cast<uint32_t>(t * division) : division - 1;
 
 	uint32_t index0 = baseIndex != 0 ? baseIndex - 1 : 0;
 	uint32_t index1 = baseIndex;

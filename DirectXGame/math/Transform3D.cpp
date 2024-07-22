@@ -40,7 +40,8 @@ Transform3D& Transform3D::operator=(const Transform3D& opr) noexcept {
 		rotate != opr.rotate
 		) {
 		isNeedUpdate = true;
-	} else {
+	}
+	else {
 		isNeedUpdate = false;
 	}
 	scale = opr.scale;
@@ -56,7 +57,8 @@ Transform3D& Transform3D::operator=(Transform3D&& opr) noexcept {
 		rotate != opr.rotate
 		) {
 		isNeedUpdate = true;
-	} else {
+	}
+	else {
 		isNeedUpdate = false;
 	}
 	scale = std::move(opr.scale);
@@ -163,7 +165,7 @@ void Transform3D::debug_axis(const Matrix4x4& debug_matrix) const {
 	Vector3 terminalY = Transform3D::Homogeneous(Vec3::kBasisY * __axisLength, debug_matrix);
 	Vector3 terminalZ = Transform3D::Homogeneous(Vec3::kBasisZ * __axisLength, debug_matrix);
 
-	PrimitiveDrawer::GetInstance()->DrawLine3d(initial, terminalX, {1.0f, 0.0f, 0.0f, 1.0f});
+	PrimitiveDrawer::GetInstance()->DrawLine3d(initial, terminalX, { 1.0f, 0.0f, 0.0f, 1.0f });
 	PrimitiveDrawer::GetInstance()->DrawLine3d(initial, terminalY, { 0.0f, 1.0f, 0.0f, 1.0f });
 	PrimitiveDrawer::GetInstance()->DrawLine3d(initial, terminalZ, { 0.0f, 0.0f, 1.0f, 1.0f });
 #else
@@ -245,6 +247,12 @@ Matrix4x4 Transform3D::MakeAffineMatrix(const Vector3& scale, const Quaternion& 
 	result2[3][2] = translate.z;
 	//assert(result == result2);
 	return result2;
+}
+
+Matrix4x4 Transform3D::MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
+	return Transform3D::MakeScaleMatrix(scale) *
+		Transform3D::MakeRotateMatrix(rotate.x, rotate.y, rotate.z) *
+		Transform3D::MakeTranslateMatrix(translate);
 }
 
 Vector3 Transform3D::Homogeneous(const Vector3& vector, const Matrix4x4& matrix) {
