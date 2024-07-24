@@ -26,6 +26,7 @@ public: // publicメンバ関数
 
 private: //privateメンバ関数
 	void attack();
+	void add_bullet(Vector3&& targetPosition);
 
 public:
 	Vector3 get_position() const override;
@@ -42,6 +43,7 @@ private: // メンバ変数
 	WorldTransform worldTransform;
 	std::weak_ptr<Model> model;
 	uint32_t textureHandle;
+	int attackTimer;
 
 	Input* input;
 

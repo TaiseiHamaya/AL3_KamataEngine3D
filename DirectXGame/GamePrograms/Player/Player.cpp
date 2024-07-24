@@ -4,6 +4,8 @@
 #include <Input.h>
 #include <ViewProjection.h>
 #include <math/Transform3D.h>
+
+#include "Enemy/Enemy.h"
 #include "Reticle.h"
 
 #ifdef _DEBUG
@@ -84,7 +86,10 @@ void Player::update() {
 	reticle->update();
 
 	// attak
-	attack();
+	--attackTimer;
+	if (attackTimer <= 0) {
+		attack();
+	}
 
 	// bullet update
 	for (auto bullet_itr = bullets.begin(); bullet_itr != bullets.end(); ++bullet_itr) {
@@ -118,11 +123,26 @@ void Player::on_collision() {
 void Player::attack() {
 	XINPUT_STATE joyState;
 	if (input->GetJoystickState(0, joyState) && (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
-		static constexpr float kBulletSpeed = 3.0f;
-		Vector3 velocity = (reticle->get_position() - get_position()).normalize() * kBulletSpeed;
-		bullets.emplace_back();
-		bullets.back().initialize(model, get_position(), velocity);
+		if (reticle->is_lockon()) {
+			auto&& lockonList = reticle->get_lockon_list();
+			for (auto&& lockonItr = lockonList.begin(); lockonItr != lockonList.end(); ++lockonItr) {
+				add_bullet(lockonItr->first->get_position());
+			}
+			reticle->clear_lockon();
+			attackTimer = 30;
+		}
+		else {
+			add_bullet(reticle->get_position());
+			attackTimer = 5;
+		}
 	}
+}
+
+void Player::add_bullet(Vector3&& targetPosition) {
+	static constexpr float kBulletSpeed = 3.0f;
+	Vector3 velocity = (targetPosition - get_position()).normalize() * kBulletSpeed;
+	bullets.emplace_back();
+	bullets.back().initialize(model, get_position(), velocity);
 }
 
 Vector3 Player::get_position() const {

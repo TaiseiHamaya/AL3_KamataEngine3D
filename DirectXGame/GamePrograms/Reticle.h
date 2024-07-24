@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <list>
-#include <unordered_set>
+#include <unordered_map>
 
 #include <WorldTransform.h>
 #include <Sprite.h>
@@ -24,6 +24,9 @@ public:
 	Vector3 get_position() const;
 	void set_viewprojection(const ViewProjection* const viewProjection);
 	void set_enemy(const std::list<Enemy>* const enemys);
+	bool is_lockon() const;
+	const std::unordered_map<const Enemy*, std::unique_ptr<Sprite>>& get_lockon_list() const;
+	void clear_lockon();
 
 private:
 	WorldTransform transform3DReticle;
@@ -32,5 +35,7 @@ private:
 
 	const ViewProjection* refViewProjection;
 	const std::list<Enemy>* enemys;
-	const Enemy* lockon;
+	std::uint32_t textureHandle;
+
+	std::unordered_map<const Enemy*, std::unique_ptr<Sprite>> lockon;
 };
