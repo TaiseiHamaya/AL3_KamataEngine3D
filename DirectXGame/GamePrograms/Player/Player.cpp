@@ -1,16 +1,16 @@
 #include "Player.h"
 
-#include "Camera3D.h"
 #include <cassert>
 #include <Input.h>
-#include <Sprite.h>
 #include <ViewProjection.h>
-#include <WinApp.h>
 #include <math/Transform3D.h>
+#include "Reticle.h"
 
 #ifdef _DEBUG
 #include "imgui.h"
 #endif // _DEBUG
+
+Player::Player() = default;
 
 Player::~Player() = default;
 
@@ -21,15 +21,12 @@ void Player::initialize(const std::shared_ptr<Model>& model_, uint32_t textureHa
 	worldTransform.Initialize();
 	worldTransform.translation_ = position;
 
-	sprite.reset(Sprite::Create(reticleSpriteHandle, { 0,0 }, { 1,1,1,1 }));
-	sprite->SetAnchorPoint({ 0.5f, 0.5f });
-	reticlePos = { static_cast<float>(WinApp::kWindowWidth / 2),static_cast<float>(WinApp::kWindowHeight / 2) };
+	bullets.clear();
 
-	transform3DReticle.Initialize();
+	reticle = std::make_unique<Reticle>();
+	reticle->initialize(reticleSpriteHandle);
 
 	input = Input::GetInstance();
-
-	bullets.clear();
 
 	set_radius(2.5f);
 	collisionAttribute = 0b0001;
@@ -84,46 +81,7 @@ void Player::update() {
 	// update
 	worldTransform.UpdateMatrix();
 
-	{
-		constexpr float ReticleDistancce = 40.0f;
-		Vector3 offset = Transform3D::Homogeneous(Vec3::kBasisZ * ReticleDistancce, worldTransform.matWorld_);
-		transform3DReticle.translation_ = offset;
-
-		transform3DReticle.UpdateMatrix();
-
-		Vector3 reticlePosition = Transform3D::Homogeneous(
-			Transform3D::ExtractPosition(transform3DReticle.matWorld_),
-			refViewProjection->matView * refViewProjection->matProjection * Camera3D::GetViewPortMatrix());
-
-		sprite->SetPosition({ reticlePosition.x, reticlePosition.y });
-	}
-
-	{
-		//POINT mousePosition;
-		//GetCursorPos(&mousePosition);
-		//ScreenToClient(WinApp::GetInstance()->GetHwnd(), &mousePosition);
-		Vector2 moveStickR{};
-		if (input->GetJoystickState(0, joyState)) {
-			moveStickR.x += float(joyState.Gamepad.sThumbRX) / (std::numeric_limits<short>::max)();
-			moveStickR.y -= float(joyState.Gamepad.sThumbRY) / (std::numeric_limits<short>::max)();
-		}
-		static constexpr float kReticleMoveSpeed = 8;
-		reticlePos += moveStickR * kReticleMoveSpeed;
-		reticlePos = Vector2::Clamp(reticlePos, { 64, 64 }, { 1216, 656 });
-		sprite->SetPosition(reticlePos);
-
-		Matrix4x4 matrix = (refViewProjection->matView * refViewProjection->matProjection * Camera3D::GetViewPortMatrix()).inverse();
-
-		Vector3 posNear = Transform3D::Homogeneous({ reticlePos.x, reticlePos.y, 0 }, matrix);
-		Vector3 posFar = Transform3D::Homogeneous({ reticlePos.x, reticlePos.y, 1 }, matrix);
-
-		static constexpr float kReticleDistance = 100.0f;
-		Vector3 mouseDirection = (posFar - posNear).normalize() * kReticleDistance;
-
-		transform3DReticle.translation_ = posNear + mouseDirection;
-
-		transform3DReticle.UpdateMatrix();
-	}
+	reticle->update();
 
 	// attak
 	attack();
@@ -132,6 +90,7 @@ void Player::update() {
 	for (auto bullet_itr = bullets.begin(); bullet_itr != bullets.end(); ++bullet_itr) {
 		bullet_itr->update();
 	}
+
 	bullets.remove_if([](const PlayerBullet& bullet) {
 		if (bullet.is_dead()) {
 			return true;
@@ -149,7 +108,7 @@ void Player::draw(const ViewProjection& viewProjection) const {
 }
 
 void Player::draw_ui() {
-	sprite->Draw();
+	reticle->draw_ui();
 }
 
 void Player::on_collision() {
@@ -160,7 +119,7 @@ void Player::attack() {
 	XINPUT_STATE joyState;
 	if (input->GetJoystickState(0, joyState) && (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
 		static constexpr float kBulletSpeed = 3.0f;
-		Vector3 velocity = (Transform3D::ExtractPosition(transform3DReticle.matWorld_) - get_position()).normalize() * kBulletSpeed;
+		Vector3 velocity = (reticle->get_position() - get_position()).normalize() * kBulletSpeed;
 		bullets.emplace_back();
 		bullets.back().initialize(model, get_position(), velocity);
 	}
@@ -178,10 +137,14 @@ const std::list<PlayerBullet>& Player::get_bullets() const {
 	return bullets;
 }
 
+void Player::set_enemys(const std::list<Enemy>* const enemy) {
+	reticle->set_enemy(enemy);
+}
+
 void Player::set_parent(const WorldTransform* parent) {
 	worldTransform.parent_ = parent;
 }
 
 void Player::set_viewprojection(const ViewProjection* const viewProjection) {
-	refViewProjection = viewProjection;
+	reticle->set_viewprojection(viewProjection);
 }

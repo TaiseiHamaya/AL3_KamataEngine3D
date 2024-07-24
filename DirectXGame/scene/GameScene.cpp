@@ -47,6 +47,7 @@ void GameScene::Initialize() {
 	player->initialize(model, textureHandle, reticleTextureHandle, { 0,0,50 });
 	player->set_parent(railCamera->get_world_transform());
 	player->set_viewprojection(&railCamera->get_vp());
+	player->set_enemys(&enemys);
 
 	// デバッグ
 	isDebugCameraActive = false;

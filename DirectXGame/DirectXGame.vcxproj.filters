@@ -138,6 +138,9 @@
     <ClCompile Include="GamePrograms\CollisitonManager.cpp">
       <Filter>ソース ファイル\scene</Filter>
     </ClCompile>
+    <ClCompile Include="GamePrograms\Reticle.cpp">
+      <Filter>ソース ファイル\scene\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -274,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="GamePrograms\CollisitonManager.h">
       <Filter>ヘッダー ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePrograms\Reticle.h">
+      <Filter>ヘッダー ファイル\scene\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

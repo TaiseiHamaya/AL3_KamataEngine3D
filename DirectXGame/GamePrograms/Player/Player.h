@@ -10,10 +10,12 @@
 
 class Input;
 class Sprite;
+class Reticle;
+class Enemy;
 
 class Player : public Collider {
 public: // コンストラクタ
-	Player() = default;
+	Player();
 	~Player();
 
 public: // publicメンバ関数
@@ -31,6 +33,7 @@ public:
 
 	std::list<PlayerBullet>& get_bullets();
 	const std::list<PlayerBullet>& get_bullets() const;
+	void set_enemys(const std::list<Enemy>* const enemy);
 
 	void set_parent(const WorldTransform* parent);
 	void set_viewprojection(const ViewProjection* const viewProjection);
@@ -40,15 +43,12 @@ private: // メンバ変数
 	std::weak_ptr<Model> model;
 	uint32_t textureHandle;
 
-	WorldTransform transform3DReticle;
-	std::unique_ptr<Sprite> sprite;
-	Vector2 reticlePos;
-
 	Input* input;
 
 	std::list<PlayerBullet> bullets;
 
+	std::unique_ptr<Reticle> reticle;
+
 	const float kCharacterSpeed = 0.5f;
 	const float kCharacterRotateSpeed = 0.02f;
-	const ViewProjection* refViewProjection;
 };
