@@ -11,9 +11,9 @@
 #include <Definition.h>
 
 Transform3D::Transform3D() noexcept :
-	scale(Vec3::kBasis),
+	scale(CVector3::BASIS),
 	rotate(),
-	translate(Vec3::kZero) {
+	translate(CVector3::ZERO) {
 	isNeedUpdate = true;
 	update();
 }
@@ -141,12 +141,12 @@ void Transform3D::debug_gui() {
 	if (ImGui::DragFloat3("Scale", &scale.x, 0.01f)) {
 		isNeedUpdate = true;
 	}
-	Vector3 cood = Vec3::kZero;
+	Vector3 cood = CVector3::ZERO;
 	if (ImGui::DragFloat3("RotateLocal", &cood.x, 0.02f)) {
 		rotate *= Quaternion{ cood, cood.length() };
 		isNeedUpdate = true;
 	}
-	Vector3 quaternion = Vec3::kZero;
+	Vector3 quaternion = CVector3::ZERO;
 	if (ImGui::DragFloat3("RotateWorld", &quaternion.x, 0.01f, -PI, PI)) {
 		rotate = Quaternion{ quaternion.x,quaternion.y, quaternion.z } *rotate;
 		isNeedUpdate = true;
@@ -160,10 +160,10 @@ void Transform3D::debug_gui() {
 void Transform3D::debug_axis(const Matrix4x4& debug_matrix) const {
 #ifdef _DEBUG
 	static constexpr float __axisLength = 50;
-	Vector3 initial = Transform3D::Homogeneous(Vec3::kZero, debug_matrix);
-	Vector3 terminalX = Transform3D::Homogeneous(Vec3::kBasisX * __axisLength, debug_matrix);
-	Vector3 terminalY = Transform3D::Homogeneous(Vec3::kBasisY * __axisLength, debug_matrix);
-	Vector3 terminalZ = Transform3D::Homogeneous(Vec3::kBasisZ * __axisLength, debug_matrix);
+	Vector3 initial = Transform3D::Homogeneous(CVector3::ZERO, debug_matrix);
+	Vector3 terminalX = Transform3D::Homogeneous(CVector3::BASIS_X * __axisLength, debug_matrix);
+	Vector3 terminalY = Transform3D::Homogeneous(CVector3::BASIS_Y * __axisLength, debug_matrix);
+	Vector3 terminalZ = Transform3D::Homogeneous(CVector3::BASIS_Z * __axisLength, debug_matrix);
 
 	PrimitiveDrawer::GetInstance()->DrawLine3d(initial, terminalX, { 1.0f, 0.0f, 0.0f, 1.0f });
 	PrimitiveDrawer::GetInstance()->DrawLine3d(initial, terminalY, { 0.0f, 1.0f, 0.0f, 1.0f });

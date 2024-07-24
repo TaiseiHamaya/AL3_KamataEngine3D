@@ -14,6 +14,10 @@ Vector2 Vector2::normalize() const {
 	return *this * m;
 }
 
+constexpr const Vector3 Vector2::convert(float z) const noexcept {
+	return Vector3{ x,y,z };
+}
+
 float Vector2::DotProduct(const Vector2& input1, const Vector2& input2) {
 	return input1.x * input2.x + input1.y * input2.y;
 }

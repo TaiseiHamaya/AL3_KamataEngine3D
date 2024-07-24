@@ -33,7 +33,7 @@ void EnemyBullet::update() {
 		isDead = true;
 	}
 	Vector3 playerPos = player->get_position() - transform.translation_;
-	velocity = Vector3::Slerp(velocity, playerPos.length() ? playerPos.normalize() : Vec3::kBasisX, 0.08f);
+	velocity = Vector3::Slerp(velocity, playerPos.length() ? playerPos.normalize() : CVector3::BASIS_X, 0.08f);
 	if (std::isnan(velocity.x)) {
 		DebugText::GetInstance()->ConsolePrintf("Error");
 	}

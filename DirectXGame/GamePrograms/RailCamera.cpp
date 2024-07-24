@@ -14,7 +14,7 @@ void RailCamera::initialize(Vector3&& position, Vector3&& rotate) {
 	transform.Initialize();
 	transform.translation_ = position;
 	transform.rotation_ = rotate;
-	transform.scale_ = Vec3::kBasis;
+	transform.scale_ = CVector3::BASIS;
 	viewProjection.Initialize();
 	controlPoints = {
 		{0, 0, 0},

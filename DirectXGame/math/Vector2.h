@@ -1,6 +1,8 @@
 #pragma once
 
-#include <utility>
+#include <limits>
+
+#include "Vector3.h"
 
 /// <summary>
 /// 2次元ベクトル構造体
@@ -71,6 +73,13 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	Vector2 normalize(void) const;
+
+	/// <summary>
+	/// Vector3に変換する
+	/// </summary>
+	/// <param name="z">変換後のzパラメータ値</param>
+	/// <returns>変換後のVector3</returns>
+	constexpr const Vector3 convert(float z) const noexcept;
 
 	/// <summary>
 	/// 静的メンバ関数
@@ -185,16 +194,6 @@ public:
 
 };
 
-/// <summary>
-/// Vector2定数
-/// </summary>
-namespace Vec2 {
-	constexpr Vector2 kBasisX = Vector2{ 1.0f, 0.0f }; // x(1.0f), y(0.0f)
-	constexpr Vector2 kBasisY = Vector2{ 0.0f, 1.0f }; // x(0.0f), y(1.0f)
-	constexpr Vector2 kZero = Vector2{ 0.0f, 0.0f }; // x(0.0f), y(0.0f)
-	constexpr Vector2 kBasis = Vector2{ 1.0f, 1.0f }; // x(1.0f), y(1.0f)
-};
-
 // ------------------インライン関数定義------------------
 inline constexpr Vector2& Vector2::operator=(const Vector2& vec) noexcept {
 	x = vec.x;
@@ -263,3 +262,16 @@ inline constexpr bool Vector2::operator==(const Vector2& opr) const noexcept {
 inline constexpr bool Vector2::operator!=(const Vector2& opr) const noexcept {
 	return !(*this == opr);
 }
+
+/// <summary>
+/// Vector2定数
+/// </summary>
+namespace CVector2 {
+	constexpr Vector2 BASIS_X = Vector2{ 1.0f, 0.0f }; // x(1.0f), y(0.0f)
+	constexpr Vector2 BASIS_Y = Vector2{ 0.0f, 1.0f }; // x(0.0f), y(1.0f)
+	constexpr Vector2 ZERO = Vector2{ 0.0f, 0.0f }; // x(0.0f), y(0.0f)
+	constexpr Vector2 BASIS = Vector2{ 1.0f, 1.0f }; // x(1.0f), y(1.0f)
+	constexpr Vector2 INFINTY = Vector2{ std::numeric_limits<float>::infinity(),std::numeric_limits<float>::infinity() };
+	constexpr Vector2 INFINTY_X = Vector2{ std::numeric_limits<float>::infinity(),0 };
+	constexpr Vector2 INFINTY_Y = Vector2{ 0, std::numeric_limits<float>::infinity() };
+};

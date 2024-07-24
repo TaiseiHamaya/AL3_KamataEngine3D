@@ -1,6 +1,7 @@
 #pragma once
 
-#include <utility>
+#include <limits>
+#include <type_traits>
 
 /// <summary>
 /// 3次元ベクトルクラス
@@ -271,10 +272,14 @@ inline constexpr bool Vector3::operator!=(const Vector3& opr) const noexcept {
 /// <summary>
 /// Vector3定数
 /// </summary>
-namespace Vec3 {
-	constexpr Vector3 kBasisX = Vector3{ 1.0f, 0.0f, 0.0f }; // x(1.0f), y(0.0f), z(0.0f)
-	constexpr Vector3 kBasisY = Vector3{ 0.0f, 1.0f, 0.0f }; // x(0.0f), y(1.0f), z(0.0f)
-	constexpr Vector3 kBasisZ = Vector3{ 0.0f, 0.0f, 1.0f }; // x(0.0f), y(0.0f), z(1.0f)
-	constexpr Vector3 kZero = Vector3{ 0.0f, 0.0f, 0.0f }; // x(0.0f), y(0.0f), z(0.0f)
-	constexpr Vector3 kBasis = Vector3{ 1.0f, 1.0f, 1.0f }; // x(1.0f), y(1.0f), z(1.0f)
+namespace CVector3 {
+	constexpr Vector3 BASIS{ 1.0f, 1.0f, 1.0f }; // x(1.0f), y(1.0f), z(1.0f)
+	constexpr Vector3 BASIS_X{ 1.0f, 0.0f, 0.0f }; // x(1.0f), y(0.0f), z(0.0f)
+	constexpr Vector3 BASIS_Y{ 0.0f, 1.0f, 0.0f }; // x(0.0f), y(1.0f), z(0.0f)
+	constexpr Vector3 BASIS_Z{ 0.0f, 0.0f, 1.0f }; // x(0.0f), y(0.0f), z(1.0f)
+	constexpr Vector3 ZERO{ 0.0f, 0.0f, 0.0f }; // x(0.0f), y(0.0f), z(0.0f)
+	constexpr Vector3 INFINTY{ std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity() };
+	constexpr Vector3 INFINTY_X{ std::numeric_limits<float>::infinity(), 0, 0 };
+	constexpr Vector3 INFINTY_Y{ 0, std::numeric_limits<float>::infinity(), 0 };
+	constexpr Vector3 INFINTY_Z{ 0, 0, std::numeric_limits<float>::infinity() };
 }

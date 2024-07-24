@@ -68,7 +68,7 @@ void Player::update() {
 	}
 
 	// moveStickL
-	if (moveStickL != Vec3::kZero) {
+	if (moveStickL != CVector3::ZERO) {
 		worldTransform.translation_ += moveStickL.normalize() * kCharacterSpeed;
 	}
 	worldTransform.translation_ = Vector3::Clamp(worldTransform.translation_, Vector3{ -33.0f, -18.0f, -10000.0f }, Vector3{ 33.0f, 18.0f, 10000.0f });

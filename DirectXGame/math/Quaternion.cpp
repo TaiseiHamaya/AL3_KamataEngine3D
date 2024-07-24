@@ -5,7 +5,7 @@
 #include <Easing.h>
 
 Quaternion::Quaternion() noexcept :
-	Quaternion(Vec3::kZero, 0) {
+	Quaternion(CVector3::ZERO, 0) {
 }
 
 Quaternion::Quaternion(const Quaternion& rhs) noexcept :
@@ -19,7 +19,7 @@ Quaternion::Quaternion(Quaternion&& rhs) noexcept :
 }
 
 Quaternion::Quaternion(const Vector3& axis, float angleAxis) :
-	xyz((axis != Vec3::kZero ? axis.normalize() : Vec3::kZero)* std::sin(angleAxis / 2)),
+	xyz((axis != CVector3::ZERO ? axis.normalize() : CVector3::ZERO)* std::sin(angleAxis / 2)),
 	w(std::cos(angleAxis / 2)) {
 }
 

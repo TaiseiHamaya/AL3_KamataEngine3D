@@ -14,12 +14,12 @@ std::unique_ptr<Camera3D> Camera3D::instance;
 
 void Camera3D::Initialize() {
 	instance.reset(new Camera3D{});
-	instance->camera = Transform3D{ Vec3::kBasis, Quaternion{ 0.5f,0,0 }, { 0, 10.0f, -20.0f } };
+	instance->camera = Transform3D{ CVector3::BASIS, Quaternion{ 0.5f,0,0 }, { 0, 10.0f, -20.0f } };
 	instance->SetNDCInfomation(-160, 200, 300, 160, 0, 1000);
 	instance->SetPerspectiveFovInfomation(0.45f, float(WinApp::kWindowWidth) / WinApp::kWindowHeight, 0.1f, 1000);
 	instance->SetViewportInformation({ 0, 0 }, { WinApp::kWindowWidth, WinApp::kWindowHeight }, 0, 1);
 	instance->InstanceCameraUpdate();
-	instance->cameraDirection = Transform3D::HomogeneousVector(Vec3::kBasisZ, instance->camera.get_matrix());
+	instance->cameraDirection = Transform3D::HomogeneousVector(CVector3::BASIS_Z, instance->camera.get_matrix());
 }
 
 void Camera3D::SetCameraPos(const Vector3& pos) {
@@ -94,7 +94,7 @@ void Camera3D::InstanceCameraUpdate() {
 	MakeOrthoMatrix();
 	MakeViewportMatrix();
 	vpovMatrix = viewMatrix * perspectiveFovMatrix * viewportMatrix;
-	cameraDirection = Transform3D::HomogeneousVector(Vec3::kBasisZ, camera.get_matrix());
+	cameraDirection = Transform3D::HomogeneousVector(CVector3::BASIS_Z, camera.get_matrix());
 }
 
 #ifdef _DEBUG
