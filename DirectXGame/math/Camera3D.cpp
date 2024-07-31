@@ -2,12 +2,12 @@
 
 #include <cmath>
 
-#include "Engine/WinApp.h"
+#include "WinApp.h"
 #undef near
 #undef far
 
 #ifdef _DEBUG
-#include <externals/imgui/imgui.h>
+#include <imgui.h>
 #endif // _DEBUG
 
 
@@ -18,7 +18,7 @@ void Camera3D::Initialize() {
 	instance->camera.set_scale(CVector3::BASIS);
 	instance->camera.set_rotate(Quaternion::EulerDegree(45, 0, 0));
 	instance->camera.set_translate({ 0, 10, -10 });
-	instance->SetPerspectiveFovInfomation(0.45f, static_cast<float>(WinApp::GetClientWidth()) / static_cast<float>(WinApp::GetClientHight()), 0.1f, 1000);
+	instance->SetPerspectiveFovInfomation(0.45f, static_cast<float>(WinApp::kWindowWidth) / static_cast<float>(WinApp::kWindowHeight), 0.1f, 1000);
 	instance->camera_update();
 }
 

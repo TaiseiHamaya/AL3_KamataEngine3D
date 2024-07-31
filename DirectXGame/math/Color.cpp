@@ -4,7 +4,7 @@
 
 #include <algorithm>
 
-#include <externals/imgui/imgui.h>
+#include "imgui.h"
 
 const unsigned int Color::hex() const {
 	return (std::uint32_t(red * 255) << 24) + (std::uint32_t(green * 255) << 16) + (std::uint32_t(blue * 255) << 8) + std::uint32_t(alpha * 255);
