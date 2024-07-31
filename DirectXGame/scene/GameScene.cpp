@@ -14,12 +14,9 @@
 #include "imgui.h"
 #endif // _DEBUG
 
-GameScene::GameScene() {
-}
+GameScene::GameScene() = default;
 
-GameScene::~GameScene() {
-	delete debugCamera;
-}
+GameScene::~GameScene() = default;
 
 void GameScene::Initialize() {
 	Camera3D::Initialize();
@@ -40,21 +37,22 @@ void GameScene::Initialize() {
 
 	// カメラ
 	railCamera = std::make_unique<RailCamera>();
-	railCamera->initialize({ 0,0,-50 }, { 0,0,0 });
+	railCamera->initialize({ 0,0,0 }, { 0,0,0 });
 
 	// プレイヤー
 	player = std::make_unique<Player>();
-	player->initialize(model, textureHandle, reticleTextureHandle, { 0,0,50 });
+	player->initialize(model, textureHandle, reticleTextureHandle, { 0,0,0 });
 	player->set_parent(railCamera->get_world_transform());
 	player->set_viewprojection(&railCamera->get_vp());
 	player->set_enemys(&enemys);
 
 	// デバッグ
 	isDebugCameraActive = false;
-	debugCamera = new DebugCamera{ WinApp::kWindowWidth, WinApp::kWindowHeight };
+	debugCamera = std::make_unique<DebugCamera>(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	AxisIndicator::GetInstance()->SetVisible(true);
 
 	EnemyBullet::SetPlayer(player.get());
+	railCamera->set_camera_parent(player->get_transform());
 
 	collisionManager = std::make_unique<CollisitonManager>();
 
@@ -65,23 +63,7 @@ void GameScene::Initialize() {
 void GameScene::Update() {
 	collisionManager->reset();
 	update_pop_command();
-#ifdef _DEBUG
-	if (input_->TriggerKey(DIK_F1)) {
-		isDebugCameraActive = !isDebugCameraActive;
-	}
-	if (isDebugCameraActive) {
-		railCamera->update();
-		if (!ImGui::GetIO().WantCaptureMouse) {
-			debugCamera->Update();
-		}
-		railCamera->update_debug(debugCamera);
-	}
-	else {
-		railCamera->update();
-	}
-#else
 	railCamera->update();
-#endif
 	// player
 	player->update();
 
@@ -93,6 +75,9 @@ void GameScene::Update() {
 	for (auto bulletsItr = enemyBullets.begin(); bulletsItr != enemyBullets.end(); ++bulletsItr) {
 		bulletsItr->update();
 	}
+
+	collision();
+
 	enemys.remove_if([](const Enemy& enemy) {
 		if (enemy.is_dead()) {
 			return true;
@@ -108,7 +93,20 @@ void GameScene::Update() {
 
 	skydome->update();
 
-	collision();
+#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_F1)) {
+		isDebugCameraActive = !isDebugCameraActive;
+	}
+	if (isDebugCameraActive) {
+		if (!ImGui::GetIO().WantCaptureMouse) {
+			debugCamera->Update();
+		}
+		railCamera->update_debug(*debugCamera);
+	}
+	else {
+		railCamera->update_camera();
+	}
+#endif
 }
 
 void GameScene::Draw() {

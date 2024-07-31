@@ -10,17 +10,20 @@ class RailCamera {
 public:
 	void initialize(Vector3&& position, Vector3&& rotate);
 	void update();
+	void update_camera();
 
 #ifdef _DEBUG
-	void update_debug(DebugCamera* debugCamera);
+	void update_debug(DebugCamera& debugCamera);
 	void draw();
 #endif // _DEBUG
 
 	const ViewProjection& get_vp();
 	const WorldTransform* get_world_transform();
+	void set_camera_parent(const WorldTransform& worldTransform);
 
 private:
-	WorldTransform transform;
+	WorldTransform cameraTransform;
+	WorldTransform railTransfrom;
 	ViewProjection viewProjection;
 
 	std::vector<Vector3> worldDrawPoints;

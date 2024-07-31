@@ -41,9 +41,9 @@ void Player::update() {
 	ImGui::SetNextWindowPos({ 50,250 }, ImGuiCond_Once);
 	ImGui::SetNextWindowSize({ 210,100 }, ImGuiCond_Once);
 	ImGui::Begin("Player", nullptr, ImGuiWindowFlags_NoSavedSettings);
-	ImGui::DragFloat3("Scale", &worldTransform.scale_.x, 0.1f);
+	ImGui::DragFloat3("Scale", &worldTransform.scale_.x, 0.01f);
 	ImGui::DragFloat3("Rotate", &worldTransform.rotation_.x, 0.02f);
-	ImGui::DragFloat3("Position", &worldTransform.translation_.x, 0.5f);
+	ImGui::DragFloat3("Position", &worldTransform.translation_.x, 0.01f);
 	ImGui::End();
 #endif // _DEBUG
 	// input
@@ -53,39 +53,42 @@ void Player::update() {
 		moveStickL.x += float(joyState.Gamepad.sThumbLX) / (std::numeric_limits<short>::max)();
 		moveStickL.y += float(joyState.Gamepad.sThumbLY) / (std::numeric_limits<short>::max)();
 	}
-	if (input->PushKey(DIK_LEFT)) {
-		moveStickL.x -= 1;
-	}
-	if (input->PushKey(DIK_RIGHT)) {
-		moveStickL.x += 1;
-	}
-	if (input->PushKey(DIK_UP)) {
-		moveStickL.y += 1;
-	}
-	if (input->PushKey(DIK_DOWN)) {
-		moveStickL.y -= 1;
-	}
+	//if (input->PushKey(DIK_LEFT)) {
+	//	moveStickL.x -= 1;
+	//}
+	//if (input->PushKey(DIK_RIGHT)) {
+	//	moveStickL.x += 1;
+	//}
+	//if (input->PushKey(DIK_UP)) {
+	//	moveStickL.y += 1;
+	//}
+	//if (input->PushKey(DIK_DOWN)) {
+	//	moveStickL.y -= 1;
+	//}
 
-	// moveStickL
-	if (moveStickL != CVector3::ZERO) {
-		worldTransform.translation_ += moveStickL.normalize() * kCharacterSpeed;
-	}
-	worldTransform.translation_ = Vector3::Clamp(worldTransform.translation_, Vector3{ -33.0f, -18.0f, -10000.0f }, Vector3{ 33.0f, 18.0f, 10000.0f });
+	//// moveStickL
+	//if (moveStickL != CVector3::ZERO) {
+	//	worldTransform.translation_ += moveStickL.normalize() * kCharacterSpeed;
+	//}
+
+	//worldTransform.translation_ = Vector3::Clamp(worldTransform.translation_, Vector3{ -33.0f, -18.0f, -10000.0f }, Vector3{ 33.0f, 18.0f, 10000.0f });
 
 	// rotate
-	if (input->PushKey(DIK_A)) {
-		worldTransform.rotation_.y -= kCharacterRotateSpeed;
-	}
-	if (input->PushKey(DIK_D)) {
-		worldTransform.rotation_.y += kCharacterRotateSpeed;
-	}
+	//if (input->PushKey(DIK_A)) {
+	//	worldTransform.rotation_.y -= kCharacterRotateSpeed;
+	//}
+	//if (input->PushKey(DIK_D)) {
+	//	worldTransform.rotation_.y += kCharacterRotateSpeed;
+	//}
+
+
 
 	// update
 	worldTransform.UpdateMatrix();
 
 	reticle->update();
 
-	// attak
+	// attack
 	--attackTimer;
 	if (attackTimer <= 0) {
 		attack();
@@ -147,6 +150,10 @@ void Player::add_bullet(Vector3&& targetPosition) {
 
 Vector3 Player::get_position() const {
 	return Transform3D::ExtractPosition(worldTransform.matWorld_);
+}
+
+const WorldTransform& Player::get_transform() const {
+	return worldTransform;
 }
 
 std::list<PlayerBullet>& Player::get_bullets() {

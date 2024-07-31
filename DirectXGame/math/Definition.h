@@ -10,16 +10,18 @@
 #include "Vector2.h"
 
 constexpr float PI = float(std::numbers::pi);
+constexpr float PI_H = float(std::numbers::pi * 0.5);
 constexpr float PI2 = float(std::numbers::pi * 2.0);
 
-const Vector2 operator*(const Vector2& vec, const Matrix<2, 2>& mat);
+constexpr float ToRadian = PI / 180.0f;
+constexpr float ToDegree = 180.0f / PI;
 
 /// <summary>
 /// メモリのdeleteとnullptr化
 /// <param name="mem">開放するメモリの変数</param>
 /// </summary>
 template<class type>
-void MemClear(type*& mem);
+constexpr void MemClear(type*& mem);
 
 template<class Type>
 Type CatmullRom(const Type& p0, const Type& p1, const Type& p2, const Type& p3, float t);
@@ -32,7 +34,7 @@ Type CatmullRom(std::vector<Type>& points, float t);
 ///-------------------///
 
 template<class type>
-inline void MemClear(type*& mem) {
+inline constexpr void MemClear(type*& mem) {
 	delete mem;
 	mem = nullptr;
 }

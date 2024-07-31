@@ -14,6 +14,18 @@ Vector3 Vector3::normalize() const {
 	return *this * m;
 }
 
+const Vector3 Vector3::normalize_safe(float tolerance, const Vector3& disapproval) const noexcept {
+	assert(tolerance >= 0 && disapproval.length() == 1);
+	float length_ = length();
+	if (length_ <= tolerance) {
+		return disapproval;
+	}
+	else {
+		float m = 1.0f / length_;
+		return *this * m;
+	}
+}
+
 float Vector3::DotProduct(const Vector3& input1, const Vector3& input2) {
 	return input1.x * input2.x + input1.y * input2.y + input1.z * input2.z;
 }

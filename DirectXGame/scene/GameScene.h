@@ -86,5 +86,5 @@ private: // メンバ変数
 	std::unique_ptr<CollisitonManager> collisionManager;
 
 	bool isDebugCameraActive;
-	DebugCamera* debugCamera;
+	std::unique_ptr<DebugCamera> debugCamera;
 };

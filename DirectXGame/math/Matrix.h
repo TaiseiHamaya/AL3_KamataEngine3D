@@ -152,6 +152,8 @@ public:
 
 // ------------------3x3の特殊行列を継承定義------------------
 class Matrix4x4 final {
+public:
+	static constexpr size_t ROW = 4, COLUMN = 4;
 public: // コンストラクタ
 	Matrix4x4() noexcept = default;
 	Matrix4x4(const Matrix4x4& rhs) noexcept = default;

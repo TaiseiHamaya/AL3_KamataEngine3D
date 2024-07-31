@@ -11,10 +11,11 @@
 
 void RailCamera::initialize(Vector3&& position, Vector3&& rotate) {
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection);
-	transform.Initialize();
-	transform.translation_ = position;
-	transform.rotation_ = rotate;
-	transform.scale_ = CVector3::BASIS;
+	railTransfrom.Initialize();
+	railTransfrom.translation_ = position;
+	railTransfrom.rotation_ = rotate;
+	railTransfrom.scale_ = CVector3::BASIS;
+	cameraTransform.Initialize();
 	viewProjection.Initialize();
 	controlPoints = {
 		{0, 0, 0},
@@ -38,9 +39,9 @@ void RailCamera::update() {
 	ImGui::SetNextWindowPos({ 50, 50 }, ImGuiCond_Once);
 	ImGui::SetNextWindowSize({ 210, 150 }, ImGuiCond_Once);
 	ImGui::Begin("Camera", nullptr, ImGuiWindowFlags_NoSavedSettings);
-	ImGui::DragFloat3("Position", &transform.translation_.x, 0.1f);
-	ImGui::DragFloat3("Rotate", &transform.rotation_.x, 0.1f);
-	ImGui::DragFloat3("Scale", &transform.scale_.x, 0.1f);
+	ImGui::DragFloat3("Position", &railTransfrom.translation_.x, 0.1f);
+	ImGui::DragFloat3("Rotate", &railTransfrom.rotation_.x, 0.1f);
+	ImGui::DragFloat3("Scale", &railTransfrom.scale_.x, 0.1f);
 	ImGui::Separator();
 	ImGui::Checkbox("Play", &isMove);
 	ImGui::DragInt("RailCurrent", &currentFrame, 1.0f, 0, totalFrame);
@@ -51,24 +52,28 @@ void RailCamera::update() {
 		++currentFrame;
 	}
 
-	transform.translation_ = CatmullRom(controlPoints, 1.0f / totalFrame * currentFrame);
+	railTransfrom.translation_ = CatmullRom(controlPoints, 1.0f / totalFrame * currentFrame);
 
-	Vector3 lookAt = (CatmullRom(controlPoints, 1.0f / totalFrame * (currentFrame + 1)) - transform.translation_);
+	Vector3 lookAt = (CatmullRom(controlPoints, 1.0f / totalFrame * (currentFrame + 1)) - railTransfrom.translation_);
 
-	transform.rotation_.y = std::atan2(lookAt.x, lookAt.z);
+	railTransfrom.rotation_.y = std::atan2(lookAt.x, lookAt.z);
 
 	float xzLength = Vector2{ lookAt.x, lookAt.z }.length();
-	transform.rotation_.x = std::atan2(-lookAt.y, xzLength);
+	railTransfrom.rotation_.x = std::atan2(-lookAt.y, xzLength);
 
- 	transform.UpdateMatrix();
-	viewProjection.matView = transform.matWorld_.inverse();
+	railTransfrom.UpdateMatrix();
+}
+
+void RailCamera::update_camera() {
+	cameraTransform.UpdateMatrix();
+	viewProjection.matView = cameraTransform.matWorld_.inverse();
 	viewProjection.TransferMatrix();
 }
 
 #ifdef _DEBUG
-void RailCamera::update_debug(DebugCamera* debugCamera) {
-	viewProjection.matView = debugCamera->GetViewProjection().matView;
-	viewProjection.matProjection = debugCamera->GetViewProjection().matProjection;
+void RailCamera::update_debug(DebugCamera& debugCamera) {
+	viewProjection.matView = debugCamera.GetViewProjection().matView;
+	viewProjection.matProjection = debugCamera.GetViewProjection().matProjection;
 	viewProjection.TransferMatrix();
 }
 
@@ -88,5 +93,9 @@ const ViewProjection& RailCamera::get_vp() {
 }
 
 const WorldTransform* RailCamera::get_world_transform() {
-	return &transform;
+	return &railTransfrom;
+}
+
+void RailCamera::set_camera_parent(const WorldTransform& worldTransform) {
+	cameraTransform.parent_ = &worldTransform;
 }

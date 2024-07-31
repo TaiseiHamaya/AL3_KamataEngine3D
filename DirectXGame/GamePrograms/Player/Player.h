@@ -30,6 +30,7 @@ private: //privateメンバ関数
 
 public:
 	Vector3 get_position() const override;
+	const WorldTransform& get_transform() const;
 	void on_collision() override;
 
 	std::list<PlayerBullet>& get_bullets();

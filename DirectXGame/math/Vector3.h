@@ -57,6 +57,14 @@ public:
 	/// <returns></returns>
 	Vector3 normalize(void) const;
 
+	/// <summary>
+	/// ベクトルの正規化
+	/// </summary>
+	/// <param name="tolerance">lengthの許容値</param>
+	/// <param name="disapproval">範囲外だった場合の戻り値</param>
+	/// <returns></returns>
+	const Vector3 normalize_safe(float tolerance = 0.0001f, const Vector3& disapproval = { 1,0,0 }) const noexcept;
+
 public:
 	// ------------------static関数------------------
 

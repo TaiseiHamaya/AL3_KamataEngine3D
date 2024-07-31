@@ -148,7 +148,7 @@ void Transform3D::debug_gui() {
 	}
 	Vector3 quaternion = CVector3::ZERO;
 	if (ImGui::DragFloat3("RotateWorld", &quaternion.x, 0.01f, -PI, PI)) {
-		rotate = Quaternion{ quaternion.x,quaternion.y, quaternion.z } *rotate;
+		rotate = Quaternion::EulerRadian(quaternion) * rotate;
 		isNeedUpdate = true;
 	}
 	if (ImGui::DragFloat3("Translate", &translate.x, 1)) {
