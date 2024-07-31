@@ -35,6 +35,10 @@ public:
 
 	static const Matrix4x4& GetVPMatrix() noexcept;
 
+	static const Matrix4x4& GetViewMatrix() noexcept;
+
+	static const Matrix4x4& GetProjectionMatrix() noexcept;
+
 #ifdef _DEBUG
 	static void DebugGUI();
 #endif // _DEBUG

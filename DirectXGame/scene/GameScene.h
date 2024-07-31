@@ -8,6 +8,8 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
+#include "GamePrograms/Player.h"
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -43,6 +45,14 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+
+	uint32_t textureHandle;
+	std::shared_ptr<Model> model;
+	std::shared_ptr<Model> skydomeModel;
+
+	std::unique_ptr<ViewProjection> viewProjection;
+
+	std::unique_ptr<Player> player;
 
 	/// <summary>
 	/// ゲームシーン用

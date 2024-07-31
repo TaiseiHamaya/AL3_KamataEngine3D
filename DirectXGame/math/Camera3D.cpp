@@ -45,6 +45,14 @@ const Matrix4x4& Camera3D::GetVPMatrix() noexcept {
 	return instance->vpMatrix;
 }
 
+const Matrix4x4& Camera3D::GetViewMatrix() noexcept {
+	return instance->viewMatrix;
+}
+
+const Matrix4x4& Camera3D::GetProjectionMatrix() noexcept {
+	return instance->persectiveFovMatrix;
+}
+
 const Transform3D& Camera3D::GetCameraTransform() noexcept {
 	return instance->camera;
 }
