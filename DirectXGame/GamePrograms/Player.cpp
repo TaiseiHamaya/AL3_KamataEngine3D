@@ -13,10 +13,9 @@ Player::Player() = default;
 
 Player::~Player() = default;
 
-void Player::initialize(const std::shared_ptr<Model>& model_, uint32_t textureHandle_, Vector3&& position) {
+void Player::initialize(const std::shared_ptr<Model>& model_, Vector3&& position) {
 	assert(model_);
 	model = model_;
-	textureHandle = textureHandle_;
 	worldTransform.Initialize();
 	worldTransform.translation_ = position;
 
@@ -39,7 +38,7 @@ void Player::update() {
 }
 
 void Player::draw(const ViewProjection& viewProjection) const {
-	model.lock()->Draw(worldTransform, viewProjection, textureHandle);
+	model.lock()->Draw(worldTransform, viewProjection);
 }
 
 void Player::on_collision() {

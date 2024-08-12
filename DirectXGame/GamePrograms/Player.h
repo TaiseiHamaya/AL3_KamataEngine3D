@@ -16,7 +16,7 @@ public: // コンストラクタ
 	~Player();
 
 public: // publicメンバ関数
-	void initialize(const std::shared_ptr<Model>& model_, uint32_t textureHandle_, Vector3&& position);
+	void initialize(const std::shared_ptr<Model>& model_, Vector3&& position);
 	void update();
 	void draw(const ViewProjection& viewProjection) const;
 
@@ -30,11 +30,7 @@ public:
 private: // メンバ変数
 	WorldTransform worldTransform;
 	std::weak_ptr<Model> model;
-	uint32_t textureHandle;
 	int attackTimer;
 
 	Input* input;
-
-	const float kCharacterSpeed = 0.5f;
-	const float kCharacterRotateSpeed = 0.02f;
 };

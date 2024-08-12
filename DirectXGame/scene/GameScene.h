@@ -47,7 +47,7 @@ private: // メンバ変数
 	Audio* audio_ = nullptr;
 
 	uint32_t textureHandle;
-	std::shared_ptr<Model> model;
+	std::shared_ptr<Model> playerModel;
 	std::shared_ptr<Model> skydomeModel;
 
 	std::unique_ptr<ViewProjection> viewProjection;

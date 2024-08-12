@@ -16,8 +16,8 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	// いろいろ
-	textureHandle = TextureManager::Load("uvChecker.png");
-	model = std::shared_ptr<Model>(Model::Create());
+	//textureHandle = TextureManager::Load("uvChecker.png");
+	playerModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player", true));
 	//skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
 
 	// 天球
@@ -26,7 +26,7 @@ void GameScene::Initialize() {
 
 	// プレイヤー
 	player = std::make_unique<Player>();
-	player->initialize(model, textureHandle, { 0,0,0 });
+	player->initialize(playerModel, { 0,0,0 });
 
 	viewProjection = std::make_unique<ViewProjection>();
 	viewProjection->Initialize();
