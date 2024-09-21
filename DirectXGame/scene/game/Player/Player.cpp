@@ -28,8 +28,10 @@ void Player::update() {
 	transform.plus_translate(velocity * GameTimer::DeltaTime());
 
 	if (velocity != CVector3::ZERO) {
+		Quaternion afterRotation = Quaternion::LookForward(velocity.normalize());
+		const Quaternion& beforeRotation = transform.get_quaternion();
 		transform.set_rotate(
-			Quaternion::LookForward(velocity.normalize())
+			Quaternion::Slerp(beforeRotation, afterRotation, 0.2f)
 		);
 	}
 }
