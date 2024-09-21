@@ -55,6 +55,18 @@
     <Filter Include="ソース ファイル\3d">
       <UniqueIdentifier>{1bb25a7c-3da3-4a18-89e3-a9050f5ef4f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\scene\game">
+      <UniqueIdentifier>{ff51aa41-a8c4-4b8a-bd0b-cb38da0eff56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\scene\game">
+      <UniqueIdentifier>{4a48d90e-8270-42b1-946b-a7fc93cf87ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game">
+      <UniqueIdentifier>{b84cbb0e-59c9-4a45-8ccd-d8197448816c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\game">
+      <UniqueIdentifier>{85407ee2-bef3-46b9-87e8-4c4543385351}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base\DirectXCommon.cpp">
@@ -96,14 +108,29 @@
     <ClCompile Include="math\Transform3D.cpp">
       <Filter>ソース ファイル\math</Filter>
     </ClCompile>
-    <ClCompile Include="GamePrograms\Player.cpp">
-      <Filter>ソース ファイル\scene</Filter>
-    </ClCompile>
     <ClCompile Include="3d\WorldTransformEX.cpp">
       <Filter>ソース ファイル\3d</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\game\Player\Player.cpp">
+      <Filter>ソース ファイル\scene\game</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\game\Skydome\Skydome.cpp">
+      <Filter>ソース ファイル\scene\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\WorldInstance.cpp">
+      <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\GameTimer.cpp">
+      <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\SceneManager.cpp">
+      <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\BaseScene.cpp">
+      <Filter>ソース ファイル\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -218,8 +245,26 @@
     <ClInclude Include="math\Transform3D.h">
       <Filter>ヘッダー ファイル\math</Filter>
     </ClInclude>
-    <ClInclude Include="GamePrograms\Player.h">
-      <Filter>ヘッダー ファイル\scene</Filter>
+    <ClInclude Include="scene\game\Skydome\Skydome.h">
+      <Filter>ヘッダー ファイル\scene\game</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\game\Player\Player.h">
+      <Filter>ヘッダー ファイル\scene\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\BaseScene.h">
+      <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\WorldInstance.h">
+      <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\GameTimer.h">
+      <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\SceneManager.h">
+      <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\TimedCall.h">
+      <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

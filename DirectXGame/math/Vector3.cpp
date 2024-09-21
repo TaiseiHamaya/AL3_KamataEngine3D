@@ -5,24 +5,22 @@
 #include <algorithm>
 
 float Vector3::length() const noexcept {
-	return std::sqrt(x * x + y * y + z * z);
+	return std::sqrt(DotProduct(*this, *this));
 }
 
 const Vector3 Vector3::normalize() const noexcept(false) {
 	assert(length() != 0);
-	float m = 1.0f / length();
-	return *this * m;
+	return *this / length();;
 }
 
 const Vector3 Vector3::normalize_safe(float tolerance, const Vector3& disapproval) const noexcept {
-	assert(tolerance >= 0 && disapproval.length() == 1);
+	assert(tolerance >= 0);
 	float length_ = length();
 	if (length_ <= tolerance) {
 		return disapproval;
 	}
 	else {
-		float m = 1.0f / length_;
-		return *this * m;
+		return *this / length_;
 	}
 }
 
@@ -47,7 +45,7 @@ const Vector3 Vector3::Abs(const Vector3& vector) noexcept {
 }
 
 Vector3 Vector3::Projection(const Vector3& vector, const Vector3& onto) {
-	assert(onto.length() == 1);
+	//assert(onto.length() == 1);
 	return onto * Vector3::DotProduct(onto, vector);
 }
 

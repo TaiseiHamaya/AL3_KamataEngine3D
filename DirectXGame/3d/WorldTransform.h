@@ -6,6 +6,8 @@
 #include <type_traits>
 #include <wrl.h>
 
+class Transform3D;
+
 // 定数バッファ用データ構造体
 struct ConstBufferDataWorldTransform {
 	Matrix4x4 matWorld; // ローカル → ワールド変換行列
@@ -52,7 +54,7 @@ public:
 	/// <returns>定数バッファ</returns>
 	const Microsoft::WRL::ComPtr<ID3D12Resource>& GetConstBuffer() const { return constBuffer_; }
 
-	void UpdateMatrix();
+	void UpdateMatrix(const Transform3D& transform);
 
 private:
 	// 定数バッファ

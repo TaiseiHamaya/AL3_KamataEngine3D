@@ -30,7 +30,7 @@ void Transform3D::set_scale(const Vector3& scale_) noexcept {
 }
 
 void Transform3D::set_rotate(const Quaternion& rotate_) noexcept {
-	rotate = rotate_;
+	rotate = rotate_.normalize();
 }
 
 void Transform3D::set_translate(const Vector3& translate_) noexcept {
@@ -75,10 +75,15 @@ void Transform3D::copy(const Transform3D& copy) noexcept {
 	translate = copy.translate;
 }
 
+void Transform3D::look_at(const Transform3D& rhs, const Vector3& upwards) noexcept {
+	Vector3 forward = (rhs.get_translate() - translate).normalize_safe();
+	rotate = Quaternion::LookForward(forward, upwards);
+}
+
 void Transform3D::debug_gui() {
 #ifdef _DEBUG
 	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-	if (ImGui::TreeNode(std::format("Transform3D({:})", (void*)this).c_str())) {
+	if (ImGui::CollapsingHeader(std::format("Transform3D({:})", (void*)this).c_str())) {
 		if (ImGui::Button("ResetScale")) {
 			scale = CVector3::BASIS;
 		}
@@ -93,14 +98,14 @@ void Transform3D::debug_gui() {
 		ImGui::DragFloat3("Scale", &scale.x, 0.01f);
 		Vector3 rotationL = CVector3::ZERO;
 		if (ImGui::DragFloat3("RotateLocal", &rotationL.x, 1.0f, -180.0f, 180.0f)) {
-			rotate = Quaternion::EulerDegree(rotationL) * rotate;
+			rotate = (rotate * Quaternion::EulerDegree(rotationL)).normalize();
 		}
 		Vector3 rotationW = CVector3::ZERO;
 		if (ImGui::DragFloat3("RotateWorld", &rotationW.x, 1.0f, -180.0f, 180.0f)) {
 			rotate *= Quaternion::EulerDegree(rotationW);
+			rotate = rotate.normalize();
 		}
 		ImGui::DragFloat3("Translate", &translate.x, 0.1f);
-		ImGui::TreePop();
 	}
 #endif // _DEBUG
 }

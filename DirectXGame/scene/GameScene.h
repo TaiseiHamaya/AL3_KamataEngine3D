@@ -1,20 +1,21 @@
 #pragma once
 
+#include <BaseScene.h>
+
 #include "Audio.h"
 #include "DirectXCommon.h"
 #include "Input.h"
 #include "Model.h"
 #include "Sprite.h"
-#include "ViewProjection.h"
-#include "WorldTransform.h"
 
-#include "GamePrograms/Player.h"
+#include "scene/game/Skydome/Skydome.h"
+#include "scene/game/Player/Player.h"
+#include "Camera3D.h"
 
 /// <summary>
 /// ゲームシーン
 /// </summary>
-class GameScene {
-
+class GameScene : public BaseScene {
 public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
@@ -29,32 +30,46 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void initialize() override;
+
+	void begin() override;
 
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update();
+	void update() override;
+
+	void matrix_update() override;
+
+	void late_update() override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void draw() const override;
+
+#ifdef _DEBUG
+public:
+	void debug_gui() override;
+#endif // _DEBUG
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 
-	uint32_t textureHandle;
-	std::shared_ptr<Model> playerModel;
-	std::shared_ptr<Model> skydomeModel;
-
-	std::unique_ptr<ViewProjection> viewProjection;
-
-	std::unique_ptr<Player> player;
-
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
+
+	std::unique_ptr<Camera3D> camera;
+
+	uint32_t textureHandle;
+	std::shared_ptr<Model> playerModel;
+	std::shared_ptr<Model> skydomeModel;
+	std::shared_ptr<Model> groundModel;
+
+	std::unique_ptr<Player> player;
+	std::unique_ptr<Skydome> skydome;
+	std::unique_ptr<WorldInstance> ground;
 };
