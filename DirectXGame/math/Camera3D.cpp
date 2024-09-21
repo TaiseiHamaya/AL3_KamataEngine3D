@@ -77,10 +77,8 @@ const ViewProjection& Camera3D::get_view_projection() const {
 
 #ifdef _DEBUG
 void Camera3D::debug_gui() {
-	ImGui::Begin("Camera3D");
 	transform.debug_gui();
 	ImGui::Checkbox("DebugCamera", &isDebugCameraActive);
-	ImGui::End();
 }
 
 void Camera3D::debug_camera() {

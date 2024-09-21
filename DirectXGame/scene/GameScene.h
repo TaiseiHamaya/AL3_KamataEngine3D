@@ -10,7 +10,7 @@
 
 #include "scene/game/Skydome/Skydome.h"
 #include "scene/game/Player/Player.h"
-#include "Camera3D.h"
+#include "scene/game/FollowCamera/FollowCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -62,7 +62,7 @@ private: // メンバ変数
 	/// ゲームシーン用
 	/// </summary>
 
-	std::unique_ptr<Camera3D> camera;
+	std::unique_ptr<FollowCamera> camera;
 
 	uint32_t textureHandle;
 	std::shared_ptr<Model> playerModel;

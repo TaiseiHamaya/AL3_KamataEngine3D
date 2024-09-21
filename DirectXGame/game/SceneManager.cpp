@@ -26,10 +26,10 @@ void SceneManager::begin() {
 
 void SceneManager::update() {
 	nowScene->begin();
-	nowScene->update();
 #ifdef _DEBUG
 	nowScene->debug_gui();
 #endif // _DEBUG
+	nowScene->update();
 	nowScene->matrix_update();
 	nowScene->late_update();
 }

@@ -4,6 +4,8 @@
 
 #include "Camera3D.h"
 
+#include "GameTimer.h"
+
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {}
@@ -13,7 +15,7 @@ void GameScene::initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	camera = std::make_unique<Camera3D>();
+	camera = std::make_unique<FollowCamera>();
 	camera->initialize();
 
 	// いろいろ
@@ -36,11 +38,21 @@ void GameScene::initialize() {
 	player = std::make_unique<Player>();
 	player->initialize();
 	player->set_model(playerModel);
+	player->set_camera(camera.get());
+
+	camera->set_target(player.get());
 
 	WorldInstance::SetStaticViewProjection(camera->get_view_projection());
 }
 
 void GameScene::begin() {
+	XINPUT_STATE joyState;
+	bool inputResult = input_->GetJoystickState(0, joyState);
+
+	if (inputResult) {
+		player->input(joyState);
+		camera->input(joyState);
+	}
 }
 
 void GameScene::update() {
@@ -118,5 +130,7 @@ void GameScene::debug_gui() {
 	player->debug_gui();
 	camera->debug_gui();
 	camera->debug_camera();
+
+	GameTimer::DebugGui();
 }
 #endif // _DEBUG

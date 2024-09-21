@@ -72,6 +72,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #endif // _DEBUG
 
 	GameTimer::Initialize();
+#ifdef _DEBUG
+	GameTimer::IsFixDeltaTime(true);
+#endif // _DEBUG
 
 	// メインループ
 	while (true) {
