@@ -58,13 +58,10 @@ void FollowCamera::update() {
 }
 
 void FollowCamera::input(const XINPUT_STATE& joyState) {
-
 	constexpr float DEADZONE = 0.2f;
 
-	inputStickR = CVector2::ZERO;
-
-	inputStickR.x += joyState.Gamepad.sThumbRX / float((std::numeric_limits<SHORT>::max)());
-	inputStickR.y += joyState.Gamepad.sThumbRY / float((std::numeric_limits<SHORT>::max)());
+	inputStickR.x = joyState.Gamepad.sThumbRX / float((std::numeric_limits<SHORT>::max)());
+	inputStickR.y = joyState.Gamepad.sThumbRY / float((std::numeric_limits<SHORT>::max)());
 
 	if (inputStickR.length() <= DEADZONE) {
 		inputStickR = CVector2::ZERO;

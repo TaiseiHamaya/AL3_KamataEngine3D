@@ -20,7 +20,11 @@ void GameScene::initialize() {
 
 	// いろいろ
 	//textureHandle = TextureManager::Load("uvChecker.png");
-	playerModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player", true));
+	//playerModel = std::shared_ptr<Model>(Model::CreateFromOBJ("player", true));
+	playerModelBody = std::shared_ptr<Model>(Model::CreateFromOBJ("float_Body", true));
+	playerModelHead = std::shared_ptr<Model>(Model::CreateFromOBJ("float_Head", true));
+	playerModelArmL = std::shared_ptr<Model>(Model::CreateFromOBJ("float_L_arm", true));
+	playerModelArmR = std::shared_ptr<Model>(Model::CreateFromOBJ("float_R_arm", true));
 	skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
 	groundModel = std::shared_ptr<Model>(Model::CreateFromOBJ("ground", true));
 
@@ -37,7 +41,8 @@ void GameScene::initialize() {
 	// プレイヤー
 	player = std::make_unique<Player>();
 	player->initialize();
-	player->set_model(playerModel);
+	//player->set_model(playerModel);
+	player->set_models({ playerModelBody, playerModelHead, playerModelArmL, playerModelArmR });
 	player->set_camera(camera.get());
 
 	camera->set_target(player.get());

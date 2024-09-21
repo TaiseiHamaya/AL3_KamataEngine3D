@@ -65,7 +65,11 @@ private: // メンバ変数
 	std::unique_ptr<FollowCamera> camera;
 
 	uint32_t textureHandle;
-	std::shared_ptr<Model> playerModel;
+	//std::shared_ptr<Model> playerModel;
+	std::shared_ptr<Model> playerModelHead;
+	std::shared_ptr<Model> playerModelBody;
+	std::shared_ptr<Model> playerModelArmL;
+	std::shared_ptr<Model> playerModelArmR;
 	std::shared_ptr<Model> skydomeModel;
 	std::shared_ptr<Model> groundModel;
 
