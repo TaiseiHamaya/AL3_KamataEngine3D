@@ -25,8 +25,10 @@ void WorldInstance::draw(const ViewProjection& viewProjection) const {
 	}
 }
 
+#ifdef _DEBUG
 void WorldInstance::debug_gui() {
 }
+#endif // _DEBUG
 
 Vector3 WorldInstance::world_position() const {
 	return Transform3D::ExtractPosition(hierarchy.matWorld_);

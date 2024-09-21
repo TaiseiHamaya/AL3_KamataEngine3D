@@ -12,7 +12,7 @@ void FollowCamera::initialize() {
 
 void FollowCamera::update() {
 	// 入力から回転に変換
-	Vector2 rotateAngle = inputStickR * ToRadian;
+	Vector2 rotateAngle = inputStickR * ToRadian * 1.5f;
 
 	rotateAngle.y *= -1;
 	const Quaternion& rotation = transform.get_quaternion();
