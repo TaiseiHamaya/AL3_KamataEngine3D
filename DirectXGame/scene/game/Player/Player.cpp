@@ -1,13 +1,10 @@
 #include "Player.h"
 
-#include <Input.h>
 #include "Transform3D.h"
 
 #include "Camera3D.h"
 #include "GameTimer.h"
 #include "Definition.h"
-
-#include <cassert>
 
 #ifdef _DEBUG
 #include "imgui.h"
@@ -18,15 +15,7 @@ Player::Player() = default;
 Player::~Player() = default;
 
 void Player::initialize() {
-	WorldInstance::initialize();
-	for (WorldInstance& parts : playerParts) {
-		parts.initialize();
-	}
-
-	playerParts[PlayerParts::Body].set_parent(*this);
-	playerParts[PlayerParts::Head].set_parent(*this);
-	playerParts[PlayerParts::ArmL].set_parent(*this);
-	playerParts[PlayerParts::ArmR].set_parent(*this);
+	MultiModelInstance::initialize();
 
 	basePartsOffset[PlayerParts::Body] = { 0.0f, 0.0f , 0.0f };
 	basePartsOffset[PlayerParts::Head] = { 0.0f, 1.46f, 0.0f };
@@ -39,20 +28,6 @@ void Player::update() {
 	rotation();
 	floating();
 	arm_swing();
-}
-
-void Player::matrix_update() {
-	WorldInstance::matrix_update();
-	for (WorldInstance& parts : playerParts) {
-		parts.matrix_update();
-	}
-}
-
-void Player::draw() const {
-	WorldInstance::draw();
-	for (const WorldInstance& parts : playerParts) {
-		parts.draw();
-	}
 }
 
 void Player::input(const XINPUT_STATE& joyState) {
@@ -95,8 +70,8 @@ void Player::floating() {
 	floatingParameter = std::fmod(floatingParameter, PI2);
 	constexpr float floatWidth = 0.3f;
 	Vector3 displacement{ 0, std::sin(floatingParameter) * floatWidth, 0 };
-	for (int i = 0; i < NUM_PARTS; ++i) {
-		playerParts[i].get_transform().set_translate(
+	for (int i = 0; i < PLAYER_NUM_PARTS; ++i) {
+		partsInstance[i].get_transform().set_translate(
 			basePartsOffset[i] + displacement
 		);
 	}
@@ -109,19 +84,12 @@ void Player::arm_swing() {
 	swingTimer = std::fmod(swingTimer, cycle);
 	float swingAngle = maxAngle * std::sin(PI2 * swingTimer / cycle);
 	Quaternion swingRotation = Quaternion::AngleAxis(CVector3::BASIS_X, swingAngle);
-	playerParts[PlayerParts::ArmL].get_transform().set_rotate(swingRotation);
-	playerParts[PlayerParts::ArmR].get_transform().set_rotate(swingRotation);
+	partsInstance[PlayerParts::ArmL].get_transform().set_rotate(swingRotation);
+	partsInstance[PlayerParts::ArmR].get_transform().set_rotate(swingRotation);
 }
 
 void Player::set_camera(const Camera3D* camera_) {
 	camera = camera_;
-}
-
-void Player::set_models(std::array<std::shared_ptr<Model>, NUM_PARTS>  models_) {
-	for (int index = 0; const std::shared_ptr<Model>&playerModelParts : models_) {
-		playerParts[index].set_model(playerModelParts);
-		++index;
-	}
 }
 
 #ifdef _DEBUG

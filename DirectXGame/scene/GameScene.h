@@ -10,6 +10,7 @@
 
 #include "scene/game/Skydome/Skydome.h"
 #include "scene/game/Player/Player.h"
+#include "scene/game/Enemy/Enemy.h"
 #include "scene/game/FollowCamera/FollowCamera.h"
 
 /// <summary>
@@ -72,8 +73,11 @@ private: // メンバ変数
 	std::shared_ptr<Model> playerModelArmR;
 	std::shared_ptr<Model> skydomeModel;
 	std::shared_ptr<Model> groundModel;
+	std::shared_ptr<Model> enemyModelBody;
+	std::shared_ptr<Model> enemyModelArm;
 
 	std::unique_ptr<Player> player;
+	std::unique_ptr<Enemy> enemy;
 	std::unique_ptr<Skydome> skydome;
 	std::unique_ptr<WorldInstance> ground;
 };

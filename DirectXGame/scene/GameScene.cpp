@@ -1,8 +1,9 @@
 #include "GameScene.h"
-#include "TextureManager.h"
+
 #include <cassert>
 
-#include "Camera3D.h"
+#include "TextureManager.h"
+#include "Input.h"
 
 #include "GameTimer.h"
 
@@ -27,6 +28,8 @@ void GameScene::initialize() {
 	playerModelArmR = std::shared_ptr<Model>(Model::CreateFromOBJ("float_R_arm", true));
 	skydomeModel = std::shared_ptr<Model>(Model::CreateFromOBJ("skydome", true));
 	groundModel = std::shared_ptr<Model>(Model::CreateFromOBJ("ground", true));
+	enemyModelBody = std::shared_ptr<Model>(Model::CreateFromOBJ("needle_Body", true));
+	enemyModelArm = std::shared_ptr<Model>(Model::CreateFromOBJ("needle_arm", true));
 
 	// 天球
 	skydome = std::make_unique<Skydome>();
@@ -42,8 +45,12 @@ void GameScene::initialize() {
 	player = std::make_unique<Player>();
 	player->initialize();
 	//player->set_model(playerModel);
-	player->set_models({ playerModelBody, playerModelHead, playerModelArmL, playerModelArmR });
+	player->set_parts_models({ playerModelBody, playerModelHead, playerModelArmL, playerModelArmR });
 	player->set_camera(camera.get());
+
+	enemy = std::make_unique<Enemy>();
+	enemy->initialize();
+	enemy->set_parts_models({ enemyModelBody, enemyModelArm, enemyModelArm });
 
 	camera->set_target(player.get());
 
@@ -65,6 +72,7 @@ void GameScene::update() {
 	player->update();
 	skydome->update();
 	ground->update();
+	enemy->update();
 }
 
 void GameScene::matrix_update() {
@@ -72,6 +80,7 @@ void GameScene::matrix_update() {
 	player->matrix_update();
 	skydome->matrix_update();
 	ground->matrix_update();
+	enemy->matrix_update();
 }
 
 void GameScene::late_update() {
@@ -79,6 +88,7 @@ void GameScene::late_update() {
 	player->late_update();
 	skydome->late_update();
 	ground->late_update();
+	enemy->late_update();
 }
 
 void GameScene::draw() const {
@@ -110,6 +120,7 @@ void GameScene::draw() const {
 	player->draw();
 	skydome->draw();
 	ground->draw();
+	enemy->draw();
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

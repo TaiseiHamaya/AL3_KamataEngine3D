@@ -132,6 +132,15 @@
     <ClCompile Include="game\BaseScene.cpp">
       <Filter>ソース ファイル\game</Filter>
     </ClCompile>
+    <ClCompile Include="game\MultiModelInstance.cpp">
+      <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\game\FollowCamera\FollowCamera.cpp">
+      <Filter>ソース ファイル\scene\game</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\game\Enemy\Enemy.cpp">
+      <Filter>ソース ファイル\scene\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -265,6 +274,15 @@
     </ClInclude>
     <ClInclude Include="game\TimedCall.h">
       <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\MultiModelInstance.h">
+      <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\game\Enemy\Enemy.h">
+      <Filter>ヘッダー ファイル\scene\game</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\game\FollowCamera\FollowCamera.h">
+      <Filter>ヘッダー ファイル\scene\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
