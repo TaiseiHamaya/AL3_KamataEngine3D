@@ -22,5 +22,11 @@ public:
 	void update() override;
 
 private:
+	void move();
+	void arm_movement();
+
+private:
 	std::array<Vector3, ENEMY_NUM_PARTS> basePartsOffset;
+
+	float animationTimer;
 };
