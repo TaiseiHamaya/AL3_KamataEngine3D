@@ -21,13 +21,15 @@ void Player::initialize() {
 	basePartsOffset[PlayerParts::Head] = { 0.0f, 1.46f, 0.0f };
 	basePartsOffset[PlayerParts::ArmL] = { -0.5f, 1.26f, 0.0f };
 	basePartsOffset[PlayerParts::ArmR] = { 0.5f, 1.26f, 0.0f };
+	partsInstance[PlayerParts::Hammer].set_active(false);
+
+	behavior = PlayerBehavior::Root;
+	behavior_root_initialize();
+	behaviorRequest = std::nullopt;
 }
 
 void Player::update() {
-	move();
-	rotation();
-	floating();
-	arm_swing();
+	behavior_update();
 }
 
 void Player::input(const XINPUT_STATE& joyState) {
@@ -39,6 +41,8 @@ void Player::input(const XINPUT_STATE& joyState) {
 	if (inputStickL.length() <= DEADZONE) {
 		inputStickL = CVector2::ZERO;
 	}
+
+	isPressA = joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A;
 }
 
 void Player::move() {
@@ -78,14 +82,85 @@ void Player::floating() {
 }
 
 void Player::arm_swing() {
+	auto& value = std::get<BehaviorRootValue>(behaviorValue);
 	constexpr float cycle = 2.0f;
 	constexpr float maxAngle = PI / 6;
-	swingTimer += GameTimer::DeltaTime();
-	swingTimer = std::fmod(swingTimer, cycle);
-	float swingAngle = maxAngle * std::sin(PI2 * swingTimer / cycle);
+	value.swingTimer += GameTimer::DeltaTime();
+	value.swingTimer = std::fmod(value.swingTimer, cycle);
+	float swingAngle = maxAngle * -std::cos(PI2 * value.swingTimer / cycle);
 	Quaternion swingRotation = Quaternion::AngleAxis(CVector3::BASIS_X, swingAngle);
 	partsInstance[PlayerParts::ArmL].get_transform().set_rotate(swingRotation);
 	partsInstance[PlayerParts::ArmR].get_transform().set_rotate(swingRotation);
+}
+
+void Player::behavior_update() {
+	if (behaviorRequest.has_value()) {
+		switch (behaviorRequest.value()) {
+		case PlayerBehavior::Root:
+			behavior_root_initialize();
+			break;
+		case PlayerBehavior::Attack:
+			behavior_attack_initialize();
+			break;
+		default:
+			break;
+		}
+		behaviorRequest = std::nullopt;
+	}
+	switch (behavior) {
+	case Player::PlayerBehavior::Root:
+		behavior_root_update();
+		break;
+	case Player::PlayerBehavior::Attack:
+		behavior_attack_update();
+		break;
+	default:
+		break;
+	}
+}
+
+void Player::behavior_root_initialize() {
+	behavior = PlayerBehavior::Root;
+	behaviorValue = BehaviorRootValue(0.0f);
+}
+
+void Player::behavior_root_update() {
+	move();
+	rotation();
+	floating();
+	arm_swing();
+	if (isPressA) {
+		behaviorRequest = PlayerBehavior::Attack;
+	}
+}
+
+void Player::behavior_attack_initialize() {
+	behavior = PlayerBehavior::Attack;
+	behaviorValue = BehaviorAttackValue{ 0.0f };
+	partsInstance[PlayerParts::Hammer].set_active(true);
+}
+
+void Player::behavior_attack_update() {
+	constexpr float ANIMATION_TIME = 0.5f;
+	constexpr float MOVE_SPEED = 5.0f;
+	auto& value = std::get<BehaviorAttackValue>(behaviorValue);
+	value.timer += GameTimer::DeltaTime();
+	// アニメーションが終了していれば遷移させる
+	if (value.timer >= ANIMATION_TIME) {
+		partsInstance[PlayerParts::Hammer].set_active(false);
+		behaviorRequest = PlayerBehavior::Root;
+	}
+	const float angleParametric = -std::sin(value.timer / ANIMATION_TIME * PI * 1.5f) * 0.5f + 0.5f;
+	const float velocityParametric = std::pow(value.timer / ANIMATION_TIME, 1.0f);
+	const Quaternion internal = CQuaternion::BACK_X;
+	const Quaternion terminal = Quaternion::AngleAxis(CVector3::BASIS_X, -PI / 3);
+	const Quaternion rotation = Quaternion::Slerp(internal, terminal, angleParametric);
+	const Vector3 forward = CVector3::BASIS_Z * transform.get_quaternion();
+
+	transform.plus_translate(forward * velocityParametric * MOVE_SPEED * GameTimer::DeltaTime());
+	partsInstance[PlayerParts::ArmL].get_transform().set_rotate(rotation);
+	partsInstance[PlayerParts::ArmR].get_transform().set_rotate(rotation);
+	partsInstance[PlayerParts::Hammer].get_transform().set_rotate(CQuaternion::BACK_X * rotation);
 }
 
 void Player::set_camera(const Camera3D* camera_) {
@@ -102,6 +177,7 @@ void Player::debug_gui() {
 	ImGui::DragFloat3("Head", &basePartsOffset[PlayerParts::Head].x, 0.01f);
 	ImGui::DragFloat3("ArmL", &basePartsOffset[PlayerParts::ArmL].x, 0.01f);
 	ImGui::DragFloat3("ArmR", &basePartsOffset[PlayerParts::ArmR].x, 0.01f);
+	ImGui::Text("Behavior : %d", behavior);
 	ImGui::End();
 }
 #endif // _DEBUG

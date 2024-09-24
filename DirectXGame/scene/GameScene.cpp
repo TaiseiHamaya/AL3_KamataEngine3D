@@ -30,6 +30,7 @@ void GameScene::initialize() {
 	groundModel = std::shared_ptr<Model>(Model::CreateFromOBJ("ground", true));
 	enemyModelBody = std::shared_ptr<Model>(Model::CreateFromOBJ("needle_Body", true));
 	enemyModelArm = std::shared_ptr<Model>(Model::CreateFromOBJ("needle_arm", true));
+	hammerModel = std::shared_ptr<Model>(Model::CreateFromOBJ("hammer", true));
 
 	// 天球
 	skydome = std::make_unique<Skydome>();
@@ -45,12 +46,22 @@ void GameScene::initialize() {
 	player = std::make_unique<Player>();
 	player->initialize();
 	//player->set_model(playerModel);
-	player->set_parts_models({ playerModelBody, playerModelHead, playerModelArmL, playerModelArmR });
+	player->set_parts_models({
+		playerModelBody,
+		playerModelHead,
+		playerModelArmL,
+		playerModelArmR,
+		hammerModel
+		});
 	player->set_camera(camera.get());
 
 	enemy = std::make_unique<Enemy>();
 	enemy->initialize();
-	enemy->set_parts_models({ enemyModelBody, enemyModelArm, enemyModelArm });
+	enemy->set_parts_models({ 
+		enemyModelBody, 
+		enemyModelArm, 
+		enemyModelArm 
+		});
 
 	camera->set_target(player.get());
 

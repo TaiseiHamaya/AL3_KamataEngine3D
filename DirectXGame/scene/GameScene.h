@@ -75,6 +75,7 @@ private: // メンバ変数
 	std::shared_ptr<Model> groundModel;
 	std::shared_ptr<Model> enemyModelBody;
 	std::shared_ptr<Model> enemyModelArm;
+	std::shared_ptr<Model> hammerModel;
 
 	std::unique_ptr<Player> player;
 	std::unique_ptr<Enemy> enemy;

@@ -40,11 +40,13 @@ public:
 	const Transform3D& get_transform() const;
 	Transform3D& get_transform();
 	const Matrix4x4& world_matrix() const;
+	void set_active(bool isActive_);
 
 	void set_parent(const WorldInstance& rhs);
 	void set_model(const std::shared_ptr<Model>& model_);
 
 protected:
+	bool isActive;
 	Transform3D transform;
 	WorldTransform hierarchy;
 	std::shared_ptr<Model> model;

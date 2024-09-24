@@ -3,6 +3,7 @@
 void WorldInstance::initialize() {
 	hierarchy.Initialize();
 	model.reset();
+	isActive = true;
 }
 
 void WorldInstance::update() {
@@ -20,7 +21,7 @@ void WorldInstance::draw() const {
 }
 
 void WorldInstance::draw(const ViewProjection& viewProjection) const {
-	if (model) {
+	if (isActive && model) {
 		model->Draw(hierarchy, viewProjection);
 	}
 }
@@ -44,6 +45,10 @@ Transform3D& WorldInstance::get_transform() {
 
 const Matrix4x4& WorldInstance::world_matrix() const {
 	return hierarchy.matWorld_;
+}
+
+void WorldInstance::set_active(bool isActive_) {
+	isActive = isActive_;
 }
 
 void WorldInstance::set_parent(const WorldInstance& rhs) {
