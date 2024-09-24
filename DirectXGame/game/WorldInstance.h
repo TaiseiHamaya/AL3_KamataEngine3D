@@ -46,10 +46,10 @@ public:
 	void set_model(const std::shared_ptr<Model>& model_);
 
 protected:
-	bool isActive;
 	Transform3D transform;
 	WorldTransform hierarchy;
 	std::shared_ptr<Model> model;
+	bool isActive;
 
 public:
 	static void SetStaticViewProjection(const ViewProjection& viewProjection);

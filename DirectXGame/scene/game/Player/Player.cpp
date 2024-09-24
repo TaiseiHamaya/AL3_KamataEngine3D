@@ -21,7 +21,9 @@ void Player::initialize() {
 	basePartsOffset[PlayerParts::Head] = { 0.0f, 1.46f, 0.0f };
 	basePartsOffset[PlayerParts::ArmL] = { -0.5f, 1.26f, 0.0f };
 	basePartsOffset[PlayerParts::ArmR] = { 0.5f, 1.26f, 0.0f };
+	basePartsOffset[PlayerParts::Hammer] = { 0.0f, 1.0f, 0.0f };
 	partsInstance[PlayerParts::Hammer].set_active(false);
+	partsInstance[PlayerParts::Hammer].get_transform().set_translate(basePartsOffset[PlayerParts::Hammer]);
 
 	behavior = PlayerBehavior::Root;
 	behavior_root_initialize();
@@ -43,6 +45,7 @@ void Player::input(const XINPUT_STATE& joyState) {
 	}
 
 	isPressA = joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A;
+	isPressRB = joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER;
 }
 
 void Player::move() {
@@ -82,15 +85,20 @@ void Player::floating() {
 }
 
 void Player::arm_swing() {
-	auto& value = std::get<BehaviorRootValue>(behaviorValue);
+	auto& value = std::get<WorkRoot>(behaviorValue);
 	constexpr float cycle = 2.0f;
 	constexpr float maxAngle = PI / 6;
 	value.swingTimer += GameTimer::DeltaTime();
 	value.swingTimer = std::fmod(value.swingTimer, cycle);
 	float swingAngle = maxAngle * -std::cos(PI2 * value.swingTimer / cycle);
 	Quaternion swingRotation = Quaternion::AngleAxis(CVector3::BASIS_X, swingAngle);
-	partsInstance[PlayerParts::ArmL].get_transform().set_rotate(swingRotation);
-	partsInstance[PlayerParts::ArmR].get_transform().set_rotate(swingRotation);
+	const Quaternion& internal = partsInstance[PlayerParts::ArmL].get_transform().get_quaternion();
+	partsInstance[PlayerParts::ArmL].get_transform().set_rotate(
+		Quaternion::Slerp(internal, swingRotation, 0.1f)
+	);
+	partsInstance[PlayerParts::ArmR].get_transform().set_rotate(
+		Quaternion::Slerp(internal, swingRotation, 0.1f)
+	);
 }
 
 void Player::behavior_update() {
@@ -102,9 +110,13 @@ void Player::behavior_update() {
 		case PlayerBehavior::Attack:
 			behavior_attack_initialize();
 			break;
+		case PlayerBehavior::Dash:
+			behavior_dash_initialize();
+			break;
 		default:
 			break;
 		}
+		behavior = behaviorRequest.value();
 		behaviorRequest = std::nullopt;
 	}
 	switch (behavior) {
@@ -114,14 +126,16 @@ void Player::behavior_update() {
 	case Player::PlayerBehavior::Attack:
 		behavior_attack_update();
 		break;
+	case PlayerBehavior::Dash:
+		behavior_dash_update();
+		break;
 	default:
 		break;
 	}
 }
 
 void Player::behavior_root_initialize() {
-	behavior = PlayerBehavior::Root;
-	behaviorValue = BehaviorRootValue(0.0f);
+	behaviorValue = WorkRoot(0.0f);
 }
 
 void Player::behavior_root_update() {
@@ -132,18 +146,20 @@ void Player::behavior_root_update() {
 	if (isPressA) {
 		behaviorRequest = PlayerBehavior::Attack;
 	}
+	else if (isPressRB) {
+		behaviorRequest = PlayerBehavior::Dash;
+	}
 }
 
 void Player::behavior_attack_initialize() {
-	behavior = PlayerBehavior::Attack;
-	behaviorValue = BehaviorAttackValue{ 0.0f };
+	behaviorValue = WorkAttack{ 0.0f };
 	partsInstance[PlayerParts::Hammer].set_active(true);
 }
 
 void Player::behavior_attack_update() {
 	constexpr float ANIMATION_TIME = 0.5f;
 	constexpr float MOVE_SPEED = 5.0f;
-	auto& value = std::get<BehaviorAttackValue>(behaviorValue);
+	auto& value = std::get<WorkAttack>(behaviorValue);
 	value.timer += GameTimer::DeltaTime();
 	// アニメーションが終了していれば遷移させる
 	if (value.timer >= ANIMATION_TIME) {
@@ -153,7 +169,7 @@ void Player::behavior_attack_update() {
 	const float angleParametric = -std::sin(value.timer / ANIMATION_TIME * PI * 1.5f) * 0.5f + 0.5f;
 	const float velocityParametric = std::pow(value.timer / ANIMATION_TIME, 1.0f);
 	const Quaternion internal = CQuaternion::BACK_X;
-	const Quaternion terminal = Quaternion::AngleAxis(CVector3::BASIS_X, -PI / 3);
+	const Quaternion terminal = Quaternion::AngleAxis(CVector3::BASIS_X, -PI / 2);
 	const Quaternion rotation = Quaternion::Slerp(internal, terminal, angleParametric);
 	const Vector3 forward = CVector3::BASIS_Z * transform.get_quaternion();
 
@@ -161,6 +177,33 @@ void Player::behavior_attack_update() {
 	partsInstance[PlayerParts::ArmL].get_transform().set_rotate(rotation);
 	partsInstance[PlayerParts::ArmR].get_transform().set_rotate(rotation);
 	partsInstance[PlayerParts::Hammer].get_transform().set_rotate(CQuaternion::BACK_X * rotation);
+}
+
+void Player::behavior_dash_initialize() {
+	behaviorValue = WorkDash{0.0f};
+}
+
+void Player::behavior_dash_update() {
+	auto& value = std::get<WorkDash>(behaviorValue);
+	value.timer += GameTimer::DeltaTime();
+	constexpr float ANIMATION_TIME = 0.5f;
+	if (value.timer >= ANIMATION_TIME) {
+		behaviorRequest = PlayerBehavior::Root;
+	}
+	if (value.timer <= 0.2f) {
+		float armAngleParametric = value.timer / 0.2f;
+		const Quaternion& internal = partsInstance[PlayerParts::ArmL].get_transform().get_quaternion();
+		const Quaternion terminal = Quaternion::AngleAxis(CVector3::BASIS_X, PI / 3);
+		partsInstance[PlayerParts::ArmL].get_transform().set_rotate(
+			Quaternion::Slerp(internal, terminal, armAngleParametric)
+		);
+		partsInstance[PlayerParts::ArmR].get_transform().set_rotate(
+			Quaternion::Slerp(internal, terminal, armAngleParametric)
+		);
+	}
+	float speed = std::sin(value.timer / ANIMATION_TIME * PI) * 50.0f;
+	const Vector3 forward = CVector3::BASIS_Z * transform.get_quaternion();
+	transform.plus_translate(forward * speed * GameTimer::DeltaTime());
 }
 
 void Player::set_camera(const Camera3D* camera_) {

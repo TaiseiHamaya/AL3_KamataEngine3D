@@ -24,13 +24,18 @@ private:
 	enum class PlayerBehavior {
 		Root,
 		Attack,
+		Dash
 	};
 
-	struct BehaviorRootValue {
+	struct WorkRoot {
 		float swingTimer;
 	};
 
-	struct BehaviorAttackValue {
+	struct WorkAttack {
+		float timer;
+	};
+
+	struct WorkDash {
 		float timer;
 	};
 
@@ -55,6 +60,8 @@ private:
 	void behavior_root_update();
 	void behavior_attack_initialize();
 	void behavior_attack_update();
+	void behavior_dash_initialize();
+	void behavior_dash_update();
 
 public:
 	void set_camera(const Camera3D* camera_);
@@ -69,6 +76,7 @@ private: // メンバ変数
 
 	Vector2 inputStickL;
 	bool isPressA;
+	bool isPressRB;
 	const Camera3D* camera;
 
 	float floatingParameter;
@@ -77,5 +85,5 @@ private: // メンバ変数
 
 	PlayerBehavior behavior;
 	std::optional<PlayerBehavior> behaviorRequest;
-	std::variant<BehaviorRootValue, BehaviorAttackValue> behaviorValue;
+	std::variant<WorkRoot, WorkAttack, WorkDash > behaviorValue;
 };
