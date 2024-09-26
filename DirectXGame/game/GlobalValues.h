@@ -29,9 +29,12 @@ public: // using
 
 public: // member functions
 	void create_group(const std::string& groupName);
+
 	template<class T>
 		requires VariantAssignable<GlobalValues::Item, T>
 	void set_value(const std::string& groupName, const std::string& key, const T& value);
+
+	void export_json(const std::string& exportGroupName);
 
 #ifdef _DEBUG
 public: // for debug functions
