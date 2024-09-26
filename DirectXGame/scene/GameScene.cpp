@@ -19,7 +19,6 @@ void GameScene::initialize() {
 	globalValues.set_value("Test", "int32_t", int32_t{});
 	globalValues.set_value("Test", "float", float{});
 	globalValues.set_value("Test1", "Vector3", Vector3{});
-	globalValues.set_value("Test1", "String", std::string{});
 	//globalValues.set_value("Test1", "Vector3", Vector2{}); // Compile error
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
