@@ -111,6 +111,7 @@
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="game\BaseScene.cpp" />
+    <ClCompile Include="game\GlobalValues.cpp" />
     <ClCompile Include="game\MultiModelInstance.cpp" />
     <ClCompile Include="game\WorldInstance.cpp" />
     <ClCompile Include="game\GameTimer.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="game\BaseScene.h" />
+    <ClInclude Include="game\GlobalValues.h" />
     <ClInclude Include="game\MultiModelInstance.h" />
     <ClInclude Include="game\WorldInstance.h" />
     <ClInclude Include="game\GameTimer.h" />
