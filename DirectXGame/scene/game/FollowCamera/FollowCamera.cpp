@@ -10,7 +10,7 @@ void FollowCamera::initialize() {
 	set_parent(lookAtInstance);
 	destingRotation = transform.get_quaternion();
 
-	offset = { 0,0,30 };
+	offset = { 0,0,-30 };
 }
 
 void FollowCamera::update() {
@@ -27,8 +27,8 @@ void FollowCamera::update() {
 	if (forwardDot >= 0.999f && rotateAngle.y > 0) {
 		// 真下と視線のの差を出す。
 		float angle = std::acos(std::clamp(forwardDot, -1.0f, 1.0f));
-		if (angle >= 0.1f * ToRadian) {
-			vertical = Quaternion::AngleAxis(CVector3::BASIS_X, angle);
+		if (angle >= 88.9f * ToRadian) {
+			vertical = Quaternion::AngleAxis(CVector3::BASIS_X, angle - 1 * ToRadian);
 		}
 		else {
 			vertical = CQuaternion::IDENTITY;
@@ -67,7 +67,7 @@ void FollowCamera::update() {
 	Vector3 lookAt = Vector3::Lerp(lookAtInstance.world_position(), target->world_position(), 0.4f);
 	lookAtInstance.get_transform().set_translate(lookAt);
 	// offsetを回転させて視線を向ける
-	Vector3 translate = -offset * transform.get_quaternion();
+	Vector3 translate = offset * transform.get_quaternion();
 	transform.set_translate(translate);
 }
 
