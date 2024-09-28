@@ -141,6 +141,12 @@
     <ClCompile Include="scene\game\Enemy\Enemy.cpp">
       <Filter>ソース ファイル\scene\game</Filter>
     </ClCompile>
+    <ClCompile Include="game\GlobalValues.cpp">
+      <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Utility.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -283,6 +289,12 @@
     </ClInclude>
     <ClInclude Include="scene\game\FollowCamera\FollowCamera.h">
       <Filter>ヘッダー ファイル\scene\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\GlobalValues.h">
+      <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="base\Utility.h">
+      <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,8 @@
 #include "TextureManager.h"
 #include "Input.h"
 
+#include "GlobalValues.h"
+
 #include "GameTimer.h"
 
 GameScene::GameScene() {}
@@ -12,6 +14,12 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {}
 
 void GameScene::initialize() {
+	// 一時的に値を追加しておく
+	auto& globalValues = GlobalValues::GetInstance();
+	globalValues.set_value("Test", "int32_t", int32_t{});
+	globalValues.set_value("Test", "float", float{});
+	globalValues.set_value("Test1", "Vector3", Vector3{});
+	//globalValues.set_value("Test1", "Vector3", Vector2{}); // Compile error
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
@@ -70,7 +78,7 @@ void GameScene::initialize() {
 
 void GameScene::begin() {
 	XINPUT_STATE joyState;
-	bool inputResult = input_->GetJoystickState(0, joyState);
+	bool inputResult = input_->GetJoystickState(1, joyState);
 
 	if (inputResult) {
 		player->input(joyState);
@@ -157,6 +165,9 @@ void GameScene::debug_gui() {
 	player->debug_gui();
 	camera->debug_gui();
 	camera->debug_camera();
+
+	/// 別の場所のほうが良いかもしれない
+	GlobalValues::GetInstance().debug_gui();
 
 	GameTimer::DebugGui();
 }
