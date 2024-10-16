@@ -1,11 +1,11 @@
 #pragma once
 
-#include "MultiModelInstance.h"
 #include "Input.h"
+#include "MultiModelInstance.h"
 
 #include <array>
-#include <variant>
 #include <optional>
+#include <variant>
 
 class Camera3D;
 
@@ -62,6 +62,9 @@ private:
 	void behavior_attack_update();
 	void behavior_dash_initialize();
 	void behavior_dash_update();
+
+	void add_global_value();
+	void get_global_value();
 
 public:
 	void set_camera(const Camera3D* camera_);

@@ -10,6 +10,7 @@
 
 #include <SceneManager.h>
 #include <GameTimer.h>
+#include <GlobalValues.h>
 
 #include "GameScene.h"
 
@@ -75,6 +76,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #ifdef _DEBUG
 	GameTimer::IsFixDeltaTime(true);
 #endif // _DEBUG
+
+	GlobalValues::GetInstance().inport_json_all();
 
 	// メインループ
 	while (true) {

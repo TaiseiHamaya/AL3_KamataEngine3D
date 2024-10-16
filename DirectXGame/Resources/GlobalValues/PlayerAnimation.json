@@ -1,0 +1,16 @@
+{
+    "PlayerAnimation": {
+        "AttackMoveSpeed": 0.5,
+        "AttackTime": 0.5,
+        "DashArmAngle": 1.0471975803375244,
+        "DashSpeedMagnification": 50.0,
+        "DashStiffness": 0.30000001192092896,
+        "DashTime": 0.20000000298023224,
+        "FloatingCycle": 2.0,
+        "FloatingWidth": 0.30000001192092896,
+        "RotationInfluence": 0.20000000298023224,
+        "SwingAngle": 0.5235987901687622,
+        "SwingCycle": 2.0,
+        "SwingInfluence": 0.10000000149011612
+    }
+}
